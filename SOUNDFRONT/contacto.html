@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contacto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./styles/modals.css" />
+
+</head>
+
+<body class="bg-black text-white pt-28">
+
+    <!-- Navbar -->
+    <nav class="bg-black bg-opacity-90 fixed w-full z-50 flex items-center justify-between px-6 py-4 top-0 left-0">
+        <a href="#" class="flex items-center gap-2">
+            <div class="bg-yellow-400 text-black font-bold px-3 py-1 text-lg">DANNY</div>
+            <span class="text-yellow-400 font-semibold text-sm">YANKEE</span>
+        </a>
+        <ul id="navLinks" class="hidden md:flex gap-6 items-center text-sm font-medium">
+            <li><a href="index.html" class="text-yellow-400 hover:text-yellow-300">Inicio</a></li>
+            <li id="clienteLink" class="hidden"><a href="alquiler.html" class="hover:text-yellow-300">Alquilar
+                    productos</a></li>
+            <li id="adminLink" class="hidden"><a href="admin.html" class="hover:text-yellow-300">Admin</a></li>
+            <li><a href="eventos-info.html" class="hover:text-yellow-300">Servicios</a></li>
+            <li><a href="acercade.html" class="hover:text-yellow-300">Acerca de</a></li>
+            <li><a href="contacto.html" class="hover:text-yellow-300">Contacto</a></li>
+            <li id="loginLink"><a href="login.html" class="hover:text-yellow-300">Login</a></li>
+            <li id="logoutLink" class="hidden">
+                <button id="logoutBtn"
+                    class="hover:text-yellow-300 bg-red-600 px-3 py-1 rounded text-white font-semibold">Cerrar
+                    sesión</button>
+            </li>
+        </ul>
+
+        <div class="hidden md:flex gap-4 text-white">
+            <a href="#" aria-label="Facebook" class="hover:text-yellow-300">
+                <!-- icono Facebook -->
+            </a>
+            <a href="#" aria-label="Instagram" class="hover:text-yellow-300">
+                <!-- icono Instagram -->
+            </a>
+        </div>
+    </nav>
+
+    <section class="relative bg-black bg-opacity-90 px-6 py-16 max-w-4xl mx-auto rounded-md"
+        style="background: rgba(0,0,0,0.8);">
+        <!-- Aquí tu contenido existente sin tocar -->
+        <h2 class="text-yellow-300 text-3xl font-extrabold mb-8 text-center">Planea tu próximo evento</h2>
+
+        <div class="flex justify-around text-yellow-300 mb-10 text-center text-sm font-semibold">
+            <div>
+                <p>Teléfono</p>
+                <p class="text-white text-xs mt-1">+34 686296620</p>
+            </div>
+            <div>
+                <p>Dirección</p>
+                <p class="text-white text-xs mt-1 max-w-xs">Av. Real Fábrica de Sedas, s/n, 45600 Talavera de la Reina
+                </p>
+            </div>
+            <div>
+                <p>Email</p>
+                <p class="text-white text-xs mt-1">CORREO@CORREO.COM</p>
+            </div>
+        </div>
+
+        <form class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 text-white text-xs">
+            <div>
+                <label for="nombre" class="block mb-1 text-yellow-300 text-xs">Nombre</label>
+                <input type="text" id="nombre" name="nombre"
+                    class="w-full bg-transparent border border-gray-400 rounded px-2 py-1 text-white placeholder-white focus:outline-yellow-300"
+                    placeholder="Nombre" />
+            </div>
+            <div>
+                <label for="apellido" class="block mb-1 text-yellow-300 text-xs">Apellido</label>
+                <input type="text" id="apellido" name="apellido"
+                    class="w-full bg-transparent border border-gray-400 rounded px-2 py-1 text-white placeholder-white focus:outline-yellow-300"
+                    placeholder="Apellido" />
+            </div>
+            <div>
+                <label for="email" class="block mb-1 text-yellow-300 text-xs">Email *</label>
+                <input type="email" id="email" name="email"
+                    class="w-full bg-transparent border border-gray-400 rounded px-2 py-1 text-white placeholder-white focus:outline-yellow-300"
+                    placeholder="Email" required />
+            </div>
+            <div>
+                <label for="asunto" class="block mb-1 text-yellow-300 text-xs">Asunto</label>
+                <input type="text" id="asunto" name="asunto"
+                    class="w-full bg-transparent border border-gray-400 rounded px-2 py-1 text-white placeholder-white focus:outline-yellow-300"
+                    placeholder="Asunto" />
+            </div>
+            <div class="sm:col-span-2">
+                <label for="mensaje" class="block mb-1 text-yellow-300 text-xs">Déjanos un mensaje...</label>
+                <textarea id="mensaje" name="mensaje" rows="5"
+                    class="w-full bg-transparent border border-gray-400 rounded px-2 py-1 text-white placeholder-white resize-none focus:outline-yellow-300"
+                    placeholder="Déjanos un mensaje..."></textarea>
+            </div>
+
+            <button type="submit"
+                class="sm:col-span-2 bg-yellow-300 text-black font-semibold py-3 rounded hover:bg-yellow-400 transition">
+                Enviar
+            </button>
+        </form>
+
+        <!-- Mapa con marcador en la dirección especificada -->
+        <div class="mt-12 w-full h-64 rounded overflow-hidden shadow-lg">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3036.598928711031!2d-4.813594784607758!3d39.97213177942315!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4dd7fbf4bbbc21%3A0x9c5f3e14f1df847f!2sAv.%20Real%20F%C3%A1brica%20de%20Sedas%2C%20s%2Fn%2C%2045600%20Talavera%20de%20la%20Reina%2C%20Toledo!5e0!3m2!1ses!2ses!4v1695968446886!5m2!1ses!2ses"
+                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </section>
+
+    <nav class="fixed bottom-4 right-4">
+        <a href="login.html" class="text-yellow-400 hover:text-yellow-300 underline">Login</a>
+    </nav>
+
+    <script>
+        const loginLink = document.getElementById('loginLink');
+        const logoutLink = document.getElementById('logoutLink');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const clienteLink = document.getElementById('clienteLink');
+        const adminLink = document.getElementById('adminLink');
+
+        function checkSession() {
+            const token = localStorage.getItem('token');
+            const rol = (localStorage.getItem('rol') || '').toLowerCase();
+
+            if (token) {
+                loginLink.classList.add('hidden');
+                logoutLink.classList.remove('hidden');
+                if (rol === 'cliente') {
+                    clienteLink.classList.remove('hidden');
+                    adminLink.classList.add('hidden');
+                } else if (rol === 'admin' || rol === 'dueño') {
+                    clienteLink.classList.add('hidden');
+                    adminLink.classList.remove('hidden');
+                } else {
+                    clienteLink.classList.add('hidden');
+                    adminLink.classList.add('hidden');
+                }
+            } else {
+                loginLink.classList.remove('hidden');
+                logoutLink.classList.add('hidden');
+                clienteLink.classList.add('hidden');
+                adminLink.classList.add('hidden');
+            }
+        }
+
+        checkSession();
+
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                localStorage.clear();
+                checkSession();
+                window.location.href = 'login.html';
+            });
+        }
+    </script>
+
+    <script>
+        async function renderMenu() {
+            const navbar = document.getElementById('navbar');
+            if (!navbar) return;
+            let user = null;
+            try {
+                user = JSON.parse(sessionStorage.getItem('user'));
+            } catch (e) {
+                sessionStorage.removeItem('user');
+            }
+            if (user && user.token) {
+                if (user.rol === 'cliente') {
+                    navbar.innerHTML = `
+        <a href="/alquiler.html" class="nav-link">Alquilar productos</a>
+        <a href="#" onclick="logout()" class="nav-link">Cerrar sesión</a>
+      `;
+                } else if (user.rol === 'admin') {
+                    navbar.innerHTML = `
+        <a href="/admin.html" class="nav-link">Admin</a>
+        <a href="#" onclick="logout()" class="nav-link">Cerrar sesión</a>
+      `;
+                }
+            } else {
+                navbar.innerHTML = `
+      <a href="/index.html" class="nav-link">Inicio</a>
+      <a href="/contacto.html" class="nav-link">Contacto</a>
+      <a href="/login.html" class="nav-link">Login</a>
+    `;
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('user');
+            window.location.href = '/login.html';
+        }
+
+        window.addEventListener('DOMContentLoaded', renderMenu);
+    </script>
+    <div id="notificationModal" class="modal-overlay hidden">
+        <div id="notificationBox" class="modal-box">
+            <h2 id="notificationTitle" class="text-xl font-bold mb-2">Título</h2>
+            <p id="notificationMessage" class="text-sm mb-4">Mensaje</p>
+            <button id="notificationClose" class="modal-button">Cerrar</button>
+        </div>
+    </div>
+    <script>function mostrarModal(mensaje, tipo = "info", titulo = "") {
+            const modal = document.getElementById("notificationModal");
+            const box = document.getElementById("notificationBox");
+            const title = document.getElementById("notificationTitle");
+            const message = document.getElementById("notificationMessage");
+
+            box.className = "modal-box text-center"; // reset
+            if (tipo === "success") box.classList.add("mod-success");
+            else if (tipo === "error") box.classList.add("mod-error");
+            else box.classList.add("mod-info");
+
+            title.textContent = titulo || (tipo === "success" ? "✅ Éxito" : tipo === "error" ? "❌ Error" : "ℹ️ Información");
+            message.textContent = mensaje;
+
+            modal.classList.remove("hidden");
+        }
+
+        document.getElementById("notificationClose").addEventListener("click", () => {
+            document.getElementById("notificationModal").classList.add("hidden");
+        });
+    </script>
+</body>
+<script>
+    document.querySelector('form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const nombre = document.getElementById('nombre').value.trim();
+        const apellido = document.getElementById('apellido').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const asunto = document.getElementById('asunto').value.trim();
+        const mensaje = document.getElementById('mensaje').value.trim();
+
+        if (!email || !mensaje) {
+            alert('Por favor, completa al menos el email y el mensaje.');
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:3000/api/usuarios/send-contact-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nombre, apellido, email, asunto, mensaje })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                alert('Mensaje enviado correctamente');
+                e.target.reset();
+            } else {
+                alert('Error al enviar el mensaje: ' + (data.mensaje || 'Inténtalo más tarde.'));
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al enviar el mensaje');
+        }
+    });
+</script>
+
+</html>

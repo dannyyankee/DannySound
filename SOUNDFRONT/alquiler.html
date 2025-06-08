@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Alquiler de Productos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="./styles/modals.css" rel="stylesheet" />
+</head>
+
+<body class="bg-black text-white">
+    <!-- Navbar -->
+    <nav
+        class="bg-black bg-opacity-90 fixed w-full z-50 flex items-center justify-between px-6 py-4 top-0 left-0 right-0">
+        <div class="flex items-center gap-2">
+            <a class="flex items-center gap-2" href="/PROYECTO/SOUNDFRONT/index.html">
+                <div class="bg-yellow-400 text-black font-bold px-3 py-1 text-lg">DANNY</div>
+                <span class="text-yellow-400 font-semibold text-sm">YANKEE</span>
+            </a>
+        </div>
+        <ul class="flex-grow flex justify-center gap-6 items-center text-sm font-medium" id="navLinks">
+            <li><a class="text-white-400 hover:text-yellow-300" href="/PROYECTO/SOUNDFRONT/index.html">Inicio</a></li>
+            <li><a class="text-white-400 hover:text-yellow-300" href="/PROYECTO/SOUNDFRONT/acercade.html">Acerca de</a>
+            </li>
+            <li><a class="text-white-400 hover:text-yellow-300" href="/PROYECTO/SOUNDFRONT/contacto.html">Contacto</a>
+            </li>
+            <li><a class="text-white-400 hover:text-yellow-300"
+                    href="/PROYECTO/SOUNDFRONT/eventos-info.html">Servicios</a></li>
+
+        </ul>
+        <div class="flex items-center" id="logoutDiv">
+            <button class="text-white-400 hover:text-yellow-300 bg-red-600 px-3 py-1 rounded text-white font-semibold"
+                id="logoutBtn">Cerrar
+                sesión</button>
+        </div>
+    </nav>
+    <!-- Espacio para compensar la barra de navegación fija -->
+    <div class="pt-20"></div>
+    <!-- Contenido principal -->
+    <main class="pt-28 max-w-4xl mx-auto px-4">
+        <h1 class="text-3xl font-bold text-yellow-400 mb-6 text-center">Registrar Alquiler</h1>
+        <!-- Formulario -->
+        <form class="space-y-4 bg-gray-800 p-6 rounded" id="alquilerForm">
+            <!-- Fechas -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block mb-1" for="fechaInicio">Fecha de inicio:</label>
+                    <input class="w-full px-3 py-2 rounded text-black" id="fechaInicio" required="" type="date" />
+                </div>
+                <div>
+                    <label class="block mb-1" for="fechaFin">Fecha de fin:</label>
+                    <input class="w-full px-3 py-2 rounded text-black" id="fechaFin" required="" type="date" />
+                </div>
+            </div>
+            <!-- Productos -->
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Productos para alquiler</h2>
+                <div class="space-y-4" id="productosContainer"></div>
+                <button class="mt-2 bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded" id="addProductoBtn"
+                    type="button">+ Añadir producto</button>
+            </div>
+            <button class="mt-6 w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 rounded"
+                id="modalBtn" type="button">Alquilar
+                Productos</button>
+        </form>
+        <!-- Sección para mostrar los alquileres del cliente -->
+        <section class="mt-12 bg-gray-900 p-6 rounded">
+            <h2 class="text-2xl font-bold mb-4 text-yellow-400">Mis alquileres</h2>
+            <div class="space-y-4" id="misAlquileresContainer">
+                <!-- Aquí se mostrarán los alquileres -->
+            </div>
+        </section>
+    </main>
+    <!-- Modal -->
+    <div class="fixed inset-0 bg-black bg-opacity-60 hidden flex justify-center items-center z-50" id="paymentModal">
+        <div class="bg-white rounded-2xl shadow-lg max-w-md w-full p-6 text-black relative animate-fade-in">
+            <h2 class="text-2xl font-bold text-center text-yellow-500 mb-6">Selecciona el método de pago</h2>
+            <div class="text-center mb-4">
+                <p class="text-sm text-gray-600 mb-2">Pagos 100% seguros con:</p>
+                <div class="flex justify-center items-center gap-4">
+                    <img alt="Visa" class="h-10 w-auto" src="./assects/icons/visa.png" title="Visa" />
+                    <img alt="PayPal" class="h-10 w-auto" src="./assects/icons/paypal.jpg" title="PayPal" />
+                    <img alt="Efectivo" class="h-10 w-auto" src="./assects/icons/efectivo.png" title="Efectivo" />
+                </div>
+                <p class="text-xs text-green-600 mt-2">🔒 Modo seguro activado</p>
+            </div>
+            <div class="flex justify-around mb-4">
+                <button
+                    class="bg-yellow-400 hover:bg-yellow-300 text-black font-semibold py-2 px-6 rounded-full shadow-md transition"
+                    id="payCash">Efectivo</button>
+                <button
+                    class="bg-blue-500 hover:bg-blue-400 text-white font-semibold py-2 px-6 rounded-full shadow-md transition"
+                    id="payCard">Tarjeta</button>
+            </div>
+            <div class="space-y-4 hidden" id="cardForm">
+                <div>
+                    <label class="block mb-1 text-sm font-medium" for="cardNumber">Número de tarjeta:</label>
+                    <input class="w-full px-3 py-2 rounded border border-gray-300" id="cardNumber" maxlength="16"
+                        placeholder="#### #### #### ####" type="text" />
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block mb-1 text-sm font-medium" for="expiryDate">Caducidad:</label>
+                        <input class="w-full px-3 py-2 rounded border border-gray-300" id="expiryDate" type="month" />
+                    </div>
+                    <div>
+                        <label class="block mb-1 text-sm font-medium" for="cvv">CVV:</label>
+                        <input class="w-full px-3 py-2 rounded border border-gray-300" id="cvv" maxlength="3"
+                            placeholder="###" type="text" />
+                    </div>
+                </div>
+            </div>
+            <button
+                class="w-full bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 rounded mt-6 hidden transition"
+                id="confirmPaymentBtn">Confirmar pago</button>
+            <button class="w-full mt-2 text-sm text-gray-600 hover:text-red-600 transition"
+                id="closeModalBtn">Cancelar</button>
+        </div>
+    </div>
+    <script>
+        async function verificarDisponibilidad(productos, fechaInicio, fechaFin) {
+            const token = localStorage.getItem("token");
+
+            try {
+                const res = await fetch("http://localhost:3000/api/productos/disponibilidad", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    },
+                    body: JSON.stringify({ productos, fechaInicio, fechaFin })
+                });
+
+                if (!res.ok) {
+                    throw new Error("Error al comprobar disponibilidad");
+                }
+
+                const result = await res.json();
+                return result; // array de productos con disponibilidad
+            } catch (err) {
+                console.error(err);
+                mostrarModal("Error al comprobar disponibilidad.", "error", "❌ Disponibilidad");
+                return null;
+            }
+        }
+
+        // Mostrar el modal
+        document.getElementById("modalBtn").addEventListener("click", async () => {
+            const fechaInicio = document.getElementById("fechaInicio").value;
+            const fechaFin = document.getElementById("fechaFin").value;
+
+            if (!fechaInicio || !fechaFin) {
+                mostrarModal("Por favor, selecciona fechas de inicio y fin antes de continuar.", "error", "❌ Fechas inválidas");
+                return;
+            }
+
+            const inicio = new Date(fechaInicio);
+            const fin = new Date(fechaFin);
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+
+            if (inicio < hoy) {
+                mostrarModal("La fecha de inicio no puede ser anterior al día de hoy.", "error", "❌ Fecha incorrecta");
+                return;
+            }
+
+            if (fin < inicio) {
+                mostrarModal("La fecha de fin no puede ser anterior a la fecha de inicio.", "error", "❌ Fecha incorrecta");
+                return;
+            }
+
+            // Obtener productos seleccionados y cantidades
+            const productoRows = document.querySelectorAll("#productosContainer > div");
+            const productos = Array.from(productoRows)
+                .map(row => {
+                    const id = row.querySelector(".productoSelect").value;
+                    const cantidad = parseInt(row.querySelector(".cantidad").value, 10);
+                    return {
+                        id_producto: Number(id),
+                        cantidad: isNaN(cantidad) ? 1 : cantidad
+                    };
+                })
+                .filter(p => !isNaN(p.id_producto) && p.id_producto > 0);
+
+            if (productos.length === 0) {
+                mostrarModal("Por favor, añade al menos un producto para alquilar.", "error", "❌ Producto requerido");
+                return;
+            }
+
+            // Verificar disponibilidad en backend
+            const disponibles = await verificarDisponibilidad(productos, fechaInicio, fechaFin);
+            if (!disponibles) return;
+
+            const noDisponibles = disponibles.filter(p => p.disponible === false);
+
+            if (noDisponibles.length > 0) {
+                const nombres = noDisponibles.map(p => p.nombre || p.mensaje || "Producto desconocido").join(", ");
+                mostrarModal(`Los siguientes productos no tienen suficiente stock en esas fechas: ${nombres}`, "error", "❌ Sin stock");
+                return;
+            }
+
+            // Si todo bien, abrir modal de pago
+            document.getElementById("paymentModal").classList.remove("hidden");
+        });
+
+
+
+        // Cerrar el modal
+        document.getElementById("closeModalBtn").addEventListener("click", () => {
+            document.getElementById("paymentModal").classList.add("hidden");
+        });
+
+        // Pagar en efectivo → submit
+        document.getElementById("payCash").addEventListener("click", () => {
+            document.getElementById("paymentModal").classList.add("hidden");
+            document.getElementById("alquilerForm").requestSubmit();
+        });
+
+        // Pagar con tarjeta → mostrar inputs
+        document.getElementById("payCard").addEventListener("click", () => {
+            document.getElementById("cardForm").classList.remove("hidden");
+            document.getElementById("confirmPaymentBtn").classList.remove("hidden");
+        });
+
+        // Validar tarjeta y submit
+        document.getElementById("confirmPaymentBtn").addEventListener("click", () => {
+            const cardNumber = document.getElementById("cardNumber").value.trim();
+            const expiryDate = document.getElementById("expiryDate").value.trim();
+            const cvv = document.getElementById("cvv").value.trim();
+
+            if (!/^\d{16}$/.test(cardNumber)) {
+                mostrarModal("El número de tarjeta debe tener 16 dígitos.", "error", "❌ Tarjeta inválida");
+                return;
+            }
+
+            if (!/^\d{4}-\d{2}$/.test(expiryDate)) {
+                mostrarModal("La fecha debe tener formato AAAA-MM.", "error", "❌ Fecha inválida");
+                return;
+            }
+
+            const [year, month] = expiryDate.split("-");
+            const expiry = new Date(year, month - 1);
+            if (expiry <= new Date()) {
+                mostrarModal("La tarjeta está caducada.", "error", "❌ Tarjeta inválida");
+                return;
+            }
+
+            if (!/^\d{3}$/.test(cvv)) {
+                mostrarModal("El CVV debe tener 3 dígitos.", "error", "❌ CVV inválido");
+                return;
+            }
+
+            document.getElementById("paymentModal").classList.add("hidden");
+            document.getElementById("alquilerForm").requestSubmit();
+        });
+
+        // Función para decodificar JWT (extraer payload)
+        function parseJwt(token) {
+            try {
+                return JSON.parse(atob(token.split('.')[1]));
+            } catch (e) {
+                return null;
+            }
+        }
+
+        // Manejo dinámico de menú de navegación
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginLink = document.getElementById('loginLink');
+            const logoutLink = document.getElementById('logoutLink');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const clienteLink = document.getElementById('clienteLink');
+            const adminLink = document.getElementById('adminLink');
+
+            function getToken() {
+                return sessionStorage.getItem('token') || localStorage.getItem('token');
+            }
+            function clearSession() {
+                sessionStorage.clear();
+                localStorage.clear();
+            }
+
+            function checkSession() {
+                const token = getToken();
+                const rol = (localStorage.getItem('rol') || '').toLowerCase();
+
+                if (token) {
+                    loginLink?.classList.add('hidden');
+                    logoutLink?.classList.remove('hidden');
+                    if (rol === 'cliente') {
+                        clienteLink?.classList.remove('hidden');
+                        adminLink?.classList.add('hidden');
+                    } else if (rol === 'admin' || rol === 'dueño') {
+                        clienteLink?.classList.add('hidden');
+                        adminLink?.classList.remove('hidden');
+                    } else {
+                        clienteLink?.classList.add('hidden');
+                        adminLink?.classList.add('hidden');
+                    }
+                } else {
+                    loginLink?.classList.remove('hidden');
+                    logoutLink?.classList.add('hidden');
+                    clienteLink?.classList.add('hidden');
+                    adminLink?.classList.add('hidden');
+                }
+            }
+
+            checkSession();
+
+            logoutBtn?.addEventListener('click', () => {
+                clearSession();
+                checkSession();
+                window.location.href = 'login.html';
+            });
+        });
+
+        const productoOptions = [];
+        const productosContainer = document.getElementById("productosContainer");
+        const addProductoBtn = document.getElementById("addProductoBtn");
+
+        function addProductoRow() {
+            const row = document.createElement("div");
+            row.className = "grid grid-cols-4 gap-4 items-end";
+
+            row.innerHTML = ` 
+                <select class="productoSelect w-full px-2 py-1 rounded text-black" required>
+                    ${productoOptions.map(p => `<option value="${p.id}">${p.nombre}</option>`).join("")}
+                </select>
+                <input type="number" class="precioDia w-full px-2 py-1 rounded text-black" placeholder="Precio/día" min="0" step="0.01" required readonly />
+<input type="number" class="cantidad w-full px-2 py-1 rounded text-black" placeholder="Cantidad" min="1" step="1" required value="1" />
+                <button type="button" class="removeBtn bg-red-500 text-white px-3 py-1 rounded">Eliminar</button>
+            `;
+
+            const selectProducto = row.querySelector(".productoSelect");
+            const precioInput = row.querySelector(".precioDia");
+
+            function actualizarPrecio() {
+                const productoId = selectProducto.value;
+                const producto = productoOptions.find(p => p.id == productoId);
+                if (producto) {
+                    precioInput.value = producto.precio_dia.toFixed(2);
+                } else {
+                    precioInput.value = "";
+                }
+            }
+
+            selectProducto.addEventListener("change", actualizarPrecio);
+            actualizarPrecio();
+
+            row.querySelector(".removeBtn").addEventListener("click", () => row.remove());
+
+            productosContainer.appendChild(row);
+        }
+
+        addProductoBtn.addEventListener("click", addProductoRow);
+
+        // Calcula días entre fechas (incluye ambos días)
+        function calcularDias(fechaInicio, fechaFin) {
+            const inicio = new Date(fechaInicio);
+            const fin = new Date(fechaFin);
+            const diffTime = fin.getTime() - inicio.getTime();
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+            return diffDays > 0 ? diffDays : 1;
+        }
+
+        // Renderizar alquileres con detalle, total, estado y botón cancelar si procede
+        function renderMisAlquileres(alquileres) {
+            const container = document.getElementById("misAlquileresContainer");
+            container.innerHTML = "";
+
+            alquileres.forEach(alquiler => {
+                const dias = calcularDias(alquiler.fecha_inicio, alquiler.fecha_fin);
+                let totalAlquiler = 0;
+
+                const productosHtml = alquiler.detalles.map(detalle => {
+                    const nombre = detalle.producto.nombre || 'Producto';
+                    const cantidad = detalle.cantidad || 1;
+                    const precioDia = parseFloat(detalle.producto.precio_dia) || 0;
+                    const totalProducto = precioDia * cantidad * dias;
+                    totalAlquiler += totalProducto;
+
+                    return `<li>${nombre} (x${cantidad}) - ${dias} días - ${totalProducto.toFixed(2)} € total</li>`;
+                }).join("");
+
+                const hoy = new Date();
+                const fechaInicio = new Date(alquiler.fecha_inicio);
+                const cancelable = hoy < fechaInicio;
+
+                const div = document.createElement("div");
+                div.className = "bg-gray-800 p-4 rounded";
+
+                div.innerHTML = `
+                    <p><strong>Cliente:</strong> ${alquiler.cliente?.nombre || alquiler.dni_cliente || 'Cliente'}</p>
+                    <p><strong>Fechas:</strong> ${alquiler.fecha_inicio} → ${alquiler.fecha_fin}</p>
+                    <p><strong>Productos:</strong></p>
+                    <ul class="list-disc list-inside mb-2">${productosHtml}</ul>
+                    <p><strong>Precio Total (€):</strong> ${totalAlquiler.toFixed(2)}</p>
+<p><strong>Estado:</strong> ${alquiler.estado || 'pendiente'}</p>
+<a href="http://localhost:3000/api/servicios/factura/${alquiler.id_servicio}" target="_blank" class="bg-yellow-500 px-3 py-1 mt-2 inline-block rounded text-black">PDF</a>
+                    ${cancelable ? `<button class="cancelBtn bg-red-600 px-3 py-1 rounded text-white mt-2">Cancelar</button>` : ''}
+                `;
+
+                if (cancelable) {
+                    div.querySelector(".cancelBtn").addEventListener("click", () => {
+                        cancelarServicio(alquiler.id_servicio);
+                    });
+                }
+
+                container.appendChild(div);
+            });
+        }
+
+        // Función para cancelar servicio
+        async function cancelarServicio(id_servicio) {
+            if (!confirm("¿Seguro que quieres cancelar este servicio?")) return;
+
+            const token = localStorage.getItem("token");
+
+            try {
+                const res = await fetch(`http://localhost:3000/api/servicios/${id_servicio}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    }
+                });
+
+                if (res.ok) {
+                    mostrarModal("Servicio cancelado correctamente.", "success", "✅ Cancelado");
+                    cargarMisAlquileres(token);
+                } else {
+                    const error = await res.json();
+                    mostrarModal("Error al cancelar: " + (error.message || error.error || "Error desconocido"), "error", "❌ Error al cancelar");
+                }
+            } catch (err) {
+                console.error(err);
+                mostrarModal("Error de conexión al cancelar el servicio.", "error", "❌ Error de red");
+            }
+        }
+
+        async function cargarMisAlquileres(token) {
+            try {
+                const res = await fetch("http://localhost:3000/api/servicios/mis-servicios", {
+                    headers: { "Authorization": "Bearer " + token }
+                });
+                if (!res.ok) throw new Error("No se pudo cargar los alquileres");
+
+                const alquileres = await res.json();
+
+                if (alquileres.length === 0) {
+                    document.getElementById("misAlquileresContainer").innerHTML = "<p>No tienes alquileres registrados.</p>";
+                    return;
+                }
+
+                renderMisAlquileres(alquileres);
+            } catch (error) {
+                document.getElementById("misAlquileresContainer").innerHTML = `<p>Error cargando alquileres: ${error.message}</p>`;
+                console.error(error);
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", async () => {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                mostrarModal("No estás autenticado. Por favor, inicia sesión.", "error", "❌ Acceso denegado");
+                window.location.href = "login.html";
+                return;
+            }
+
+            const decoded = parseJwt(token);
+            const dni_cliente = decoded?.dni;
+
+            if (!dni_cliente) {
+                mostrarModal("No se pudo obtener el DNI del usuario.", "error", "❌ Error de usuario");
+                window.location.href = "login.html";
+                return;
+            }
+
+            try {
+                const res = await fetch("http://localhost:3000/api/productos/all", {
+                    headers: { "Authorization": "Bearer " + token }
+                });
+                if (!res.ok) {
+                    if (res.status === 401) {
+                        mostrarModal("No autorizado. Por favor inicia sesión de nuevo.", "error", "❌ Acceso denegado");
+                        localStorage.clear();
+                        window.location.href = "login.html";
+                        return;
+                    }
+                    const err = await res.json();
+                    throw new Error(err.error || err.mensaje || `Error ${res.status}`);
+                }
+
+                const productos = await res.json();
+                productos.forEach(p => productoOptions.push({ id: p.id_producto, nombre: p.nombre, precio_dia: parseFloat(p.precio_dia) || 0 }));
+
+                addProductoRow();
+                cargarMisAlquileres(token);
+
+            } catch (error) {
+                mostrarModal("Error cargando productos: " + error.message, "error", "❌ Error de carga");
+                console.error(error);
+            }
+        });
+
+        document.getElementById("alquilerForm").addEventListener("submit", async e => {
+            e.preventDefault();
+
+            const token = localStorage.getItem("token");
+            const decoded = parseJwt(token);
+            const dni_cliente = decoded?.dni;
+
+            if (!dni_cliente) {
+                mostrarModal("No se pudo obtener el DNI del usuario.", "error", "❌ Error de usuario");
+                return;
+            }
+
+            const fecha_inicio = document.getElementById("fechaInicio").value;
+            const fecha_fin = document.getElementById("fechaFin").value;
+
+            if (!fecha_inicio || !fecha_fin) {
+                mostrarModal("Por favor, selecciona fechas de inicio y fin válidas.", "error", "❌ Fechas inválidas");
+                return;
+            }
+
+            const productoRows = document.querySelectorAll("#productosContainer > div");
+            const productos = Array.from(productoRows)
+                .map(row => {
+                    const id = row.querySelector(".productoSelect").value;
+                    const cantidad = parseInt(row.querySelector(".cantidad").value, 10);
+                    return {
+                        id_producto: Number(id),
+                        cantidad: isNaN(cantidad) ? 1 : cantidad
+                    };
+                })
+                .filter(p => !isNaN(p.id_producto) && p.id_producto > 0);
+
+            const payload = {
+                dni_cliente,
+                fecha_inicio,
+                fecha_fin,
+                productos
+            };
+
+            try {
+                const res = await fetch("http://localhost:3000/api/servicios", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    mostrarModal("Alquiler guardado correctamente", "success", "✅ Registrado");
+                    // Descarga el PDF de la factura
+                    const blobRes = await fetch("http://localhost:3000/api/pdf/ultima-factura", {
+                        headers: {
+                            "Authorization": "Bearer " + token
+                        }
+                    });
+
+                    if (blobRes.ok) {
+                        const blob = await blobRes.blob();
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement("a");
+                        a.href = url;
+                        a.download = "factura_alquiler.pdf";
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                    } else {
+                        console.warn("Factura no generada.");
+                    }
+
+                    document.getElementById("alquilerForm").reset();
+                    productosContainer.innerHTML = "";
+                    addProductoRow();
+                    cargarMisAlquileres(token);
+                } else {
+                    const error = await res.json();
+                    mostrarModal("Error al guardar: " + error.message, "error", "❌ Error al guardar");
+                }
+            } catch (err) {
+                console.error(err);
+                mostrarModal("Error en la conexión con el servidor.", "error", "❌ Error de red");
+            }
+        });
+    </script>
+    <div class="modal-overlay hidden" id="notificationModal">
+        <div class="modal-box" id="notificationBox">
+            <h2 class="text-xl font-bold mb-2" id="notificationTitle">Título</h2>
+            <p class="text-sm mb-4" id="notificationMessage">Mensaje</p>
+            <button class="modal-button" id="notificationClose">Cerrar</button>
+        </div>
+    </div>
+    <script>function mostrarModal(mensaje, tipo = "info", titulo = "") {
+            const modal = document.getElementById("notificationModal");
+            const box = document.getElementById("notificationBox");
+            const title = document.getElementById("notificationTitle");
+            const message = document.getElementById("notificationMessage");
+
+            box.className = "modal-box text-center"; // reset
+            if (tipo === "success") box.classList.add("mod-success");
+            else if (tipo === "error") box.classList.add("mod-error");
+            else box.classList.add("mod-info");
+
+            title.textContent = titulo || (tipo === "success" ? "✅ Éxito" : tipo === "error" ? "❌ Error" : "ℹ️ Información");
+            message.textContent = mensaje;
+
+            modal.classList.remove("hidden");
+        }
+
+        document.getElementById("notificationClose").addEventListener("click", () => {
+            document.getElementById("notificationModal").classList.add("hidden");
+        });
+    </script>
+</body>
+
+</html>

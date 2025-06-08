@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Acerca de - DannySound</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="./styles/modals.css" rel="stylesheet" />
+</head>
+
+<body class="bg-black text-white">
+    <!-- Navbar -->
+    <nav class="bg-black bg-opacity-90 fixed w-full z-50 flex items-center justify-between px-6 py-4">
+        <a class="flex items-center gap-2" href="#">
+            <div class="bg-yellow-400 text-black font-bold px-3 py-1 text-lg">DANNY</div>
+            <span class="text-yellow-400 font-semibold text-sm">YANKEE</span>
+        </a>
+        <ul class="hidden md:flex gap-6 items-center text-sm font-medium" id="navLinks">
+            <li><a class="text-yellow-400 hover:text-yellow-300" href="./index.html">Inicio</a></li>
+            <li class="hidden" id="clienteLink"><a class="hover:text-yellow-300" href="cliente.html">Alquilar
+                    productos</a></li>
+            <li class="hidden" id="adminLink"><a class="hover:text-yellow-300" href="admin.html">Admin</a></li>
+            <li><a class="hover:text-yellow-300" href="./eventos-info.html">Servicios</a></li>
+            <li><a class="hover:text-yellow-300" href="./acercade.html">Acerca de</a></li>
+            <li><a class="hover:text-yellow-300" href="contacto.html">Contacto</a></li>
+            <li id="loginLink"><a class="hover:text-yellow-300" href="login.html">Login</a></li>
+            <li class="hidden" id="logoutLink">
+                <button class="hover:text-yellow-300 bg-red-600 px-3 py-1 rounded text-white font-semibold"
+                    id="logoutBtn">Cerrar sesión</button>
+            </li>
+        </ul>
+        <div class="hidden md:flex gap-4 text-white">
+            <a aria-label="Facebook" class="hover:text-yellow-300" href="#">
+                <svg class="h-5 w-5 fill-current" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 5 3.66 9.13 8.44 9.88v-6.99H7.9v-2.89h2.54v-2.2c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.25c-1.23 0-1.62.77-1.62 1.56v1.87h2.77l-.44 2.89h-2.33v6.99C18.34 21.13 22 17 22 12z">
+                    </path>
+                </svg>
+            </a>
+            <a aria-label="Instagram" class="hover:text-yellow-300" href="#">
+                <svg class="h-5 w-5 fill-current" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 2A3.75 3.75 0 004 7.75v8.5A3.75 3.75 0 007.75 20h8.5a3.75 3.75 0 003.75-3.75v-8.5A3.75 3.75 0 0016.25 4h-8.5zm8.75 1.5a1 1 0 110 2 1 1 0 010-2zM12 7a5 5 0 110 10 5 5 0 010-10zm0 2a3 3 0 100 6 3 3 0 000-6z">
+                    </path>
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Clientes satisfechos -->
+    <section class="bg-yellow-300 py-20 text-center px-4 text-black mt-16 max-w-4xl mx-auto rounded-lg shadow-lg">
+        <h2 class="text-4xl font-bold mb-4">Clientes satisfechos</h2>
+        <p class="text-lg mb-6">Superaron, por mucho, mis expectativas</p>
+
+        <!-- Filtro de estrellas -->
+        <div class="mb-6">
+            <label for="filtroEstrellas" class="block font-semibold mb-2">Filtrar por estrellas:</label>
+            <select id="filtroEstrellas" class="p-2 rounded w-full max-w-xs text-black mx-auto">
+                <option value="0">Todas</option>
+                <option value="5">★★★★★</option>
+                <option value="4">★★★★☆ o más</option>
+                <option value="3">★★★☆☆ o más</option>
+                <option value="2">★★☆☆☆ o más</option>
+                <option value="1">★☆☆☆☆ o más</option>
+            </select>
+        </div>
+
+        <!-- Contenedor para las reseñas -->
+        <div id="resenasContainer" class="space-y-6"></div>
+
+        <!-- Formulario para enviar reseña -->
+        <div id="formularioResena" class="hidden mt-12 max-w-3xl mx-auto bg-white p-6 rounded shadow text-black">
+            <textarea id="contenidoResena" rows="4" placeholder="Escribe tu reseña aquí..."
+                class="w-full p-3 rounded mb-4 border border-gray-300 resize-none"></textarea>
+
+            <div class="mb-4">
+                <label for="estrellas" class="font-semibold mr-2">Valoración:</label>
+                <select id="estrellas" class="p-2 rounded border border-gray-300 text-black">
+                    <option value="5">★★★★★</option>
+                    <option value="4">★★★★☆</option>
+                    <option value="3">★★★☆☆</option>
+                    <option value="2">★★☆☆☆</option>
+                    <option value="1">★☆☆☆☆</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="inline-flex items-center">
+                    <input type="checkbox" id="anonimo" class="form-checkbox mr-2" />
+                    Publicar como anónimo
+                </label>
+            </div>
+
+            <button id="enviarResena"
+                class="bg-yellow-400 text-black font-semibold px-6 py-2 rounded hover:bg-yellow-300 transition">Enviar
+                reseña</button>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal-overlay hidden fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50"
+        id="notificationModal">
+        <div class="modal-box bg-white rounded-lg p-6 max-w-sm text-center text-black shadow-lg relative">
+            <h2 class="text-2xl font-bold mb-3" id="notificationTitle">Título</h2>
+            <p class="mb-4" id="notificationMessage">Mensaje</p>
+            <button id="notificationClose"
+                class="bg-yellow-400 hover:bg-yellow-300 rounded px-4 py-2 font-semibold">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        // Función para mostrar modal con mensaje y tipo (info, success, error)
+        function mostrarModal(mensaje, tipo = "info", titulo = "") {
+            const modal = document.getElementById("notificationModal");
+            const box = modal.querySelector(".modal-box");
+            const title = document.getElementById("notificationTitle");
+            const message = document.getElementById("notificationMessage");
+
+            box.className = "modal-box bg-white rounded-lg p-6 max-w-sm text-center text-black shadow-lg relative"; // reset
+            if (tipo === "success") box.classList.add("mod-success");
+            else if (tipo === "error") box.classList.add("mod-error");
+            else box.classList.add("mod-info");
+
+            title.textContent = titulo || (tipo === "success" ? "✅ Éxito" : tipo === "error" ? "❌ Error" : "ℹ️ Información");
+            message.textContent = mensaje;
+
+            modal.classList.remove("hidden");
+        }
+
+        document.getElementById("notificationClose").addEventListener("click", () => {
+            document.getElementById("notificationModal").classList.add("hidden");
+        });
+
+        // Función para mostrar estrellas gráficas
+        function estrellasHTML(n) {
+            return '★'.repeat(n) + '☆'.repeat(5 - n);
+        }
+
+        // Comprobación y control de sesión
+        function checkSession() {
+            const token = localStorage.getItem("token");
+            const rol = (localStorage.getItem("rol") || "").toLowerCase();
+            const loginLink = document.getElementById("loginLink");
+            const logoutLink = document.getElementById("logoutLink");
+            const clienteLink = document.getElementById("clienteLink");
+            const adminLink = document.getElementById("adminLink");
+
+            if (token) {
+                loginLink.classList.add("hidden");
+                logoutLink.classList.remove("hidden");
+                if (rol === "cliente") {
+                    clienteLink.classList.remove("hidden");
+                    adminLink.classList.add("hidden");
+                } else if (rol === "admin" || rol === "dueño") {
+                    adminLink.classList.remove("hidden");
+                    clienteLink.classList.add("hidden");
+                } else {
+                    clienteLink.classList.add("hidden");
+                    adminLink.classList.add("hidden");
+                }
+            } else {
+                loginLink.classList.remove("hidden");
+                logoutLink.classList.add("hidden");
+                clienteLink.classList.add("hidden");
+                adminLink.classList.add("hidden");
+            }
+        }
+
+        checkSession();
+
+        document.getElementById("logoutBtn")?.addEventListener("click", () => {
+            localStorage.clear();
+            checkSession();
+            window.location.href = "login.html";
+        });
+
+        // Función para cargar y mostrar reseñas con filtro
+        function cargarResenas() {
+            const filtroValor = parseInt(document.getElementById("filtroEstrellas").value || "0");
+            const contenedor = document.getElementById("resenasContainer");
+            const token = localStorage.getItem("token");
+
+            fetch("http://localhost:3000/api/resenas")
+                .then(res => {
+                    if (!res.ok) throw new Error("Error al cargar reseñas");
+                    return res.json();
+                })
+                .then(data => {
+                    contenedor.innerHTML = "";
+
+                    const filtradas = filtroValor > 0 ? data.filter(r => r.estrellas >= filtroValor) : data;
+
+                    if (filtradas.length === 0) {
+                        contenedor.innerHTML = "<p class='text-gray-700 text-center'>No hay reseñas con ese filtro.</p>";
+                        return;
+                    }
+
+                    filtradas.forEach(r => {
+                        const div = document.createElement("div");
+                        div.className = "bg-white text-black p-4 rounded shadow text-left";
+                        div.innerHTML = `
+              <p class="text-yellow-500 text-lg">${estrellasHTML(r.estrellas)}</p>
+              <p class="italic mt-2">"${r.contenido}"</p>
+              <p class="text-sm mt-3">✍️ Escrito por: <strong>${r.anonimo ? "Anónimo" : (r.Usuario?.nombre || "Usuario")}</strong></p>
+              <p class="text-xs text-gray-600">${new Date(r.fecha).toLocaleString()}</p>
+            `;
+                        contenedor.appendChild(div);
+                    });
+                })
+                .catch(err => {
+                    console.error(err);
+                    mostrarModal("Error al cargar reseñas", "error");
+                });
+        }
+
+        // Código principal al cargar DOM
+        document.addEventListener("DOMContentLoaded", () => {
+            const formularioResena = document.getElementById("formularioResena");
+            const enviarBtn = document.getElementById("enviarResena");
+            const token = localStorage.getItem("token");
+
+            if (token) {
+                formularioResena.classList.remove("hidden");
+            }
+
+            cargarResenas();
+
+            document.getElementById("filtroEstrellas").addEventListener("change", cargarResenas);
+
+            enviarBtn.addEventListener("click", () => {
+                const contenido = document.getElementById("contenidoResena").value.trim();
+                const estrellas = parseInt(document.getElementById("estrellas").value);
+                console.log("Valor estrellas:", estrellas);
+                const anonimo = document.getElementById("anonimo").checked;
+
+                if (!contenido || !estrellas) {
+                    mostrarModal("Debes escribir una reseña y seleccionar una valoración", "error");
+                    return;
+                }
+
+                fetch("http://localhost:3000/api/resenas", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    },
+                    body: JSON.stringify({ contenido, estrellas, anonimo })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.error) throw new Error(data.error);
+                        mostrarModal("Reseña enviada correctamente", "success");
+                        document.getElementById("contenidoResena").value = "";
+                        document.getElementById("estrellas").value = "5";
+                        document.getElementById("anonimo").checked = false;
+                        cargarResenas();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        mostrarModal("Error al enviar la reseña", "error");
+                    });
+            });
+        });
+    </script>
+</body>
+
+</html>

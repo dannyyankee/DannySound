@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Gestión de Servicios</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="./styles/modals.css" rel="stylesheet" />
+</head>
+
+<body class="bg-black text-white">
+    <!-- Navbar -->
+    <nav class="bg-black bg-opacity-90 fixed w-full z-50 flex items-center px-6 py-4">
+        <div class="flex items-center gap-2">
+            <a class="flex items-center gap-2" href="/PROYECTO/SOUNDFRONT/index.html">
+                <div class="bg-yellow-400 text-black font-bold px-3 py-1 text-lg">DANNY</div>
+                <span class="text-yellow-400 font-semibold text-sm">YANKEE</span>
+            </a>
+            <!-- Navbar -->
+            <nav class="bg-black bg-opacity-90 fixed w-full z-50 flex items-center px-6 py-4">
+                <!-- Logo a la izquierda -->
+                <div class="flex items-center gap-2">
+                    <a class="flex items-center gap-2" href="/PROYECTO/SOUNDFRONT/index.html">
+                        <div class="bg-yellow-400 text-black font-bold px-3 py-1 text-lg">DANNY</div>
+                        <span class="text-yellow-400 font-semibold text-sm">YANKEE</span>
+                    </a>
+                </div>
+                <!-- Enlaces centrados -->
+                <ul class="flex-grow flex justify-center gap-6 items-center text-sm font-medium" id="navLinks">
+                    <!-- Enlaces generados dinámicamente -->
+                </ul>
+                <!-- Botón cerrar sesión a la derecha -->
+                <div class="flex items-center" id="logoutDiv">
+                    <!-- Generado dinámicamente -->
+                </div>
+            </nav>
+            <script>
+                function renderMenu() {
+                    const navLinks = document.getElementById('navLinks');
+                    const rightDiv = document.getElementById('logoutDiv');
+                    if (!navLinks || !rightDiv) return;
+
+                    let user = null;
+                    try {
+                        user = JSON.parse(sessionStorage.getItem('user'));
+                    } catch (e) {
+                        sessionStorage.removeItem('user');
+                    }
+
+                    const linkClass = "text-white hover:text-yellow-400";
+                    const buttonClass = "hover:text-yellow-400 bg-red-600 px-3 py-1 rounded text-white font-semibold";
+
+                    if (user && user.token) {
+                        if (user.rol === 'cliente') {
+                            navLinks.innerHTML = `
+                        <li><a href="/PROYECTO/SOUNDFRONT/index.html" class="${linkClass}">Inicio</a></li>
+                        <li><a href="/PROYECTO/SOUNDFRONT/servicios.html" class="${linkClass}">Servicios</a></li>
+                        <li><a href="/PROYECTO/SOUNDFRONT/alquiler.html" class="${linkClass}">Alquilar productos</a></li>
+                      `;
+                        } else if (user.rol === 'admin' || user.rol === 'dueño') {
+                            navLinks.innerHTML = `
+                        <li><a href="/PROYECTO/SOUNDFRONT/index.html" class="${linkClass}">Inicio</a></li>
+                        <li><a href="/PROYECTO/SOUNDFRONT/servicios.html" class="${linkClass}">Servicios</a></li>
+                        <li><a href="/PROYECTO/SOUNDFRONT/adminCrearProducto.html" class="${linkClass}">Productos</a></li>
+                      `;
+                        }
+
+                        rightDiv.innerHTML = `<button id="logoutBtn" class="${buttonClass}">Cerrar sesión</button>`;
+                    } else {
+                        navLinks.innerHTML = `
+                      <li><a href="/PROYECTO/SOUNDFRONT/index.html" class="${linkClass}">Inicio</a></li>
+                      <li><a href="/PROYECTO/SOUNDFRONT/admin.html" class="${linkClass}">Admin</a></li>
+                      <li><a href="/PROYECTO/SOUNDFRONT/servicios.html" class="${linkClass}">Servicios</a></li>
+                      <li><a href="/PROYECTO/SOUNDFRONT/adminCrearProducto.html" class="${linkClass}">Productos</a></li>
+                    `;
+                        rightDiv.innerHTML = `<button id="logoutBtn" class="${buttonClass}">Cerrar sesión</button>`;
+                    }
+
+                    const logoutBtn = document.getElementById('logoutBtn');
+                    if (logoutBtn) {
+                        logoutBtn.addEventListener('click', () => {
+                            sessionStorage.clear();
+                            localStorage.clear();
+                            window.location.href = '/PROYECTO/SOUNDFRONT/login.html';
+                        });
+                    }
+                }
+
+                window.addEventListener('DOMContentLoaded', renderMenu);
+            </script>
+        </div>
+        <ul class="flex-grow flex justify-center gap-6 items-center text-sm font-medium" id="navLinks"></ul>
+        <div class="flex items-center" id="logoutDiv"></div>
+    </nav>
+    <main class="pt-28 max-w-6xl mx-auto px-4">
+        <h1 class="text-3xl font-bold text-yellow-400 mb-6 text-center">Registrar Servicio</h1>
+        <form class="space-y-4 bg-gray-800 p-6 rounded" id="servicioForm">
+            <div>
+                <label class="block mb-1" for="cliente">Cliente:</label>
+                <select class="w-full px-3 py-2 rounded text-black" id="cliente" required=""></select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block mb-1" for="fechaInicio">Fecha de inicio:</label>
+                    <input class="w-full px-3 py-2 rounded text-black" id="fechaInicio" required="" type="date" />
+                </div>
+                <div>
+                    <label class="block mb-1" for="fechaFin">Fecha de fin:</label>
+                    <input class="w-full px-3 py-2 rounded text-black" id="fechaFin" required="" type="date" />
+                </div>
+            </div>
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Productos</h2>
+                <div class="space-y-4" id="productosContainer"></div>
+                <button class="mt-2 bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded" id="addProductoBtn"
+                    type="button">+ Añadir producto</button>
+            </div>
+            <button class="mt-6 w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 rounded"
+                type="submit">Guardar
+                Servicio</button>
+        </form>
+        <section class="mt-16">
+            <h2 class="text-2xl font-bold text-yellow-400 mb-4">Servicios registrados</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-gray-900 text-white rounded">
+                    <thead>
+                        <tr class="bg-gray-700">
+                            <th class="px-4 py-2 text-left">Cliente</th>
+                            <th class="px-4 py-2">Fechas</th>
+                            <th class="px-4 py-2">Productos</th>
+                            <th class="px-4 py-2 text-right">Precio Total (€)</th>
+                            <th class="px-4 py-2 text-center">Estado</th>
+                            <th class="px-4 py-2 text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-600" id="serviciosTable"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <script>
+        const clienteSelect = document.getElementById("cliente");
+        const productosContainer = document.getElementById("productosContainer");
+        const addProductoBtn = document.getElementById("addProductoBtn");
+        const productoOptions = [];
+
+        function renderMenu() {
+            const navLinks = document.getElementById("navLinks");
+            const logoutDiv = document.getElementById("logoutDiv");
+            let user = null;
+            try { user = JSON.parse(sessionStorage.getItem("user")); } catch (_) { sessionStorage.clear(); }
+
+            const linkClass = "text-white hover:text-yellow-400";
+            const buttonClass = "hover:text-yellow-400 bg-red-600 px-3 py-1 rounded text-white font-semibold";
+
+            if (user && user.token) {
+                navLinks.innerHTML = `
+          <li><a href="/PROYECTO/SOUNDFRONT/index.html" class="${linkClass}">Inicio</a></li>
+          <li><a href="/PROYECTO/SOUNDFRONT/servicios.html" class="${linkClass}">Servicios</a></li>
+          <li><a href="/PROYECTO/SOUNDFRONT/alquiler.html" class="${linkClass}">Alquilar productos</a></li>
+        `;
+                logoutDiv.innerHTML = `<button id="logoutBtn" class="${buttonClass}">Cerrar sesión</button>`;
+            }
+
+            document.getElementById("logoutBtn")?.addEventListener("click", () => {
+                sessionStorage.clear(); localStorage.clear(); window.location.href = "login.html";
+            });
+        }
+
+        function addProductoRow() {
+            const row = document.createElement("div");
+            row.className = "grid grid-cols-4 gap-4 items-end";
+            row.innerHTML = `
+        <div>
+          <label class="block mb-1">Producto:</label>
+          <select class="productoSelect w-full px-2 py-1 rounded text-black" required>
+            ${productoOptions.map(p => `<option value="${p.id}">${p.nombre} (Disp: ${p.disponible}) - ${p.precio_dia.toFixed(2)} €/día</option>`).join("")}
+          </select>
+        </div>
+        <div>
+          <label class="block mb-1">Precio/día:</label>
+          <input type="number" class="precioDia w-full px-2 py-1 rounded text-black" readonly />
+        </div>
+        <div>
+          <label class="block mb-1">Cantidad:</label>
+          <input type="number" class="cantidad w-full px-2 py-1 rounded text-black" min="1" required />
+        </div>
+        <div class="flex items-end">
+          <button type="button" class="removeBtn bg-red-500 text-white px-3 py-1 rounded">Eliminar</button>
+        </div>
+      `;
+
+            const select = row.querySelector(".productoSelect");
+            const precio = row.querySelector(".precioDia");
+            select.addEventListener("change", () => {
+                const p = productoOptions.find(p => p.id == select.value);
+                precio.value = p?.precio_dia.toFixed(2) || "";
+            });
+            row.querySelector(".removeBtn").addEventListener("click", () => row.remove());
+            select.dispatchEvent(new Event("change"));
+            productosContainer.appendChild(row);
+        }
+
+        async function cargarDatos(token) {
+            const [clientes, productos, servicios] = await Promise.all([
+                fetch("http://localhost:3000/api/usuarios?rol=cliente", { headers: { Authorization: "Bearer " + token } }).then(r => r.json()),
+                fetch("http://localhost:3000/api/productos/all", { headers: { Authorization: "Bearer " + token } }).then(r => r.json()),
+                fetch("http://localhost:3000/api/servicios", { headers: { Authorization: "Bearer " + token } }).then(r => r.json())
+            ]);
+
+            clienteSelect.innerHTML = clientes.map(c => `<option value="${c.dni}">${c.nombre}</option>`).join("");
+            productoOptions.length = 0;
+            productos.forEach(p => productoOptions.push({
+                id: p.id_producto,
+                nombre: p.nombre,
+                precio_dia: parseFloat(p.precio_dia),
+                disponible: p.disponible
+            }));
+
+            productosContainer.innerHTML = "";
+            addProductoRow();
+            renderServicios(servicios);
+        }
+
+        function calcularDias(inicio, fin) {
+            const d1 = new Date(inicio);
+            const d2 = new Date(fin);
+            return Math.floor((d2 - d1) / (1000 * 60 * 60 * 24)) + 1;
+        }
+
+        function renderServicios(servicios) {
+            const tbody = document.getElementById("serviciosTable");
+            tbody.innerHTML = "";
+            servicios.forEach(s => {
+                const dias = calcularDias(s.fecha_inicio, s.fecha_fin);
+                let total = 0;
+                const detalles = s.detalles.map(d => {
+                    const subtotal = d.cantidad * dias * (parseFloat(d.producto?.precio_dia) || 0);
+                    total += subtotal;
+                    return `<li>${d.producto?.nombre} (x${d.cantidad}) - ${dias} días - ${subtotal.toFixed(2)} €</li>`;
+                }).join("");
+
+                const cancelable = new Date(s.fecha_inicio) > new Date();
+                tbody.innerHTML += `
+          <tr>
+            <td class="px-4 py-2">${s.cliente?.nombre}</td>
+            <td class="px-4 py-2">${s.fecha_inicio} → ${s.fecha_fin}</td>
+            <td class="px-4 py-2"><ul>${detalles}</ul></td>
+            <td class="px-4 py-2 text-right">${total.toFixed(2)} €</td>
+            <td class="px-4 py-2 text-center">${s.estado}</td>
+            <td class="px-4 py-2 text-center">
+              ${cancelable ? `<button onclick="cancelarServicio(${s.id_servicio})" class="bg-red-600 px-3 py-1 rounded text-white">Cancelar</button>` : ""}
+<a href="http://localhost:3000/api/servicios/factura/${s.id_servicio}" target="_blank" class="ml-2 bg-yellow-500 px-3 py-1 rounded text-black">PDF</a>
+            </td>
+          </tr>`;
+            });
+        }
+
+        async function cancelarServicio(id) {
+            if (!confirm("¿Cancelar este servicio?")) return;
+            const token = localStorage.getItem("token");
+            await fetch(`http://localhost:3000/api/servicios/${id}`, {
+                method: "DELETE",
+                headers: { Authorization: "Bearer " + token }
+            });
+            mostrarModal("Servicio cancelado.", "info");
+            cargarDatos(token);
+        }
+
+        document.getElementById("servicioForm").addEventListener("submit", async e => {
+            e.preventDefault();
+
+            const fechaInicio = document.getElementById("fechaInicio").value;
+            const fechaFin = document.getElementById("fechaFin").value;
+            const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+
+            if (!fechaInicio || !fechaFin) return mostrarModal("Completa las fechas.", "info");
+            if (new Date(fechaInicio) < hoy) return mostrarModal("La fecha de inicio debe ser desde hoy.", "info");
+            if (new Date(fechaFin) < new Date(fechaInicio)) return mostrarModal("La fecha de fin no puede ser anterior.", "info");
+
+            const productos = Array.from(productosContainer.querySelectorAll("div"))
+                .map(div => ({
+                    id_producto: div.querySelector(".productoSelect")?.value,
+                    cantidad: parseInt(div.querySelector(".cantidad")?.value)
+                })).filter(p => p.id_producto && p.cantidad);
+
+            if (productos.length === 0) return mostrarModal("Añade al menos un producto.", "info");
+
+            const token = localStorage.getItem("token");
+
+            const disponibilidadRes = await fetch("http://localhost:3000/api/productos/disponibilidad", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+                body: JSON.stringify({ productos, fechaInicio, fechaFin })
+            });
+            const disponibilidad = await disponibilidadRes.json();
+            const noDisponibles = disponibilidad.filter(p => !p.disponible);
+
+            if (noDisponibles.length > 0) {
+                const lista = noDisponibles.map(p => `${p.nombre} (Disp: ${p.cantidadDisponible}, Solicitado: ${p.solicitado})`).join("\n");
+                return alert("Stock insuficiente para:\n" + lista);
+            }
+
+            const payload = {
+                dni_cliente: clienteSelect.value,
+                fecha_inicio: fechaInicio,
+                fecha_fin: fechaFin,
+                productos
+            };
+
+            const res = await fetch("http://localhost:3000/api/servicios", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                const servicioCreado = await res.json();
+                mostrarModal("Servicio guardado.", "info");
+                window.open(`http://localhost:3000/api/servicios/factura/${servicioCreado.id_servicio}`, "_blank");
+                document.getElementById("servicioForm").reset();
+                productosContainer.innerHTML = "";
+                addProductoRow();
+                cargarDatos(token);
+            } else {
+                const err = await res.json();
+                alert("Error: " + err.message);
+            }
+        });
+
+        window.addEventListener("DOMContentLoaded", () => {
+            renderMenu();
+            const token = localStorage.getItem("token");
+            if (!token) return window.location.href = "login.html";
+            cargarDatos(token);
+        });
+
+        addProductoBtn.addEventListener("click", addProductoRow);
+    </script>
+    <div class="modal-overlay hidden" id="notificationModal">
+        <div class="modal-box" id="notificationBox">
+            <h2 class="text-xl font-bold mb-2" id="notificationTitle">Título</h2>
+            <p class="text-sm mb-4" id="notificationMessage">Mensaje</p>
+            <button class="modal-button" id="notificationClose">Cerrar</button>
+        </div>
+    </div>
+    <script>function mostrarModal(mensaje, tipo = "info", titulo = "") {
+            const modal = document.getElementById("notificationModal");
+            const box = document.getElementById("notificationBox");
+            const title = document.getElementById("notificationTitle");
+            const message = document.getElementById("notificationMessage");
+
+            box.className = "modal-box text-center"; // reset
+            if (tipo === "success") box.classList.add("mod-success");
+            else if (tipo === "error") box.classList.add("mod-error");
+            else box.classList.add("mod-info");
+
+            title.textContent = titulo || (tipo === "success" ? "✅ Éxito" : tipo === "error" ? "❌ Error" : "ℹ️ Información");
+            message.textContent = mensaje;
+
+            modal.classList.remove("hidden");
+        }
+
+        document.getElementById("notificationClose").addEventListener("click", () => {
+            document.getElementById("notificationModal").classList.add("hidden");
+        });
+    </script>
+    <script>function mostrarModal(mensaje, tipo = "info", titulo = "") {
+            const modal = document.getElementById("notificationModal");
+            const box = document.getElementById("notificationBox");
+            const title = document.getElementById("notificationTitle");
+            const message = document.getElementById("notificationMessage");
+
+            box.className = "modal-box text-center"; // reset
+            if (tipo === "success") box.classList.add("mod-success");
+            else if (tipo === "error") box.classList.add("mod-error");
+            else box.classList.add("mod-info");
+
+            title.textContent = titulo || (tipo === "success" ? "✅ Éxito" : tipo === "error" ? "❌ Error" : "ℹ️ Información");
+            message.textContent = mensaje;
+
+            modal.classList.remove("hidden");
+        }
+
+        document.getElementById("notificationClose").addEventListener("click", () => {
+            document.getElementById("notificationModal").classList.add("hidden");
+        });
+    </script>
+</body>
+
+</html>

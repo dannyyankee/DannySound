@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Crear Producto | Admin</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="./styles/modals.css" rel="stylesheet" />
+</head>
+
+<body class="bg-black text-white flex flex-col items-center p-6 min-h-screen">
+    <!-- Navbar -->
+    <nav
+        class="bg-black bg-opacity-90 fixed w-full z-50 flex items-center justify-between px-6 py-4 top-0 left-0 right-0">
+        <div class="flex items-center gap-2">
+            <a class="flex items-center gap-2" href="/PROYECTO/SOUNDFRONT/index.html">
+                <div class="bg-yellow-400 text-black font-bold px-3 py-1 text-lg">DANNY</div>
+                <span class="text-yellow-400 font-semibold text-sm">YANKEE</span>
+            </a>
+        </div>
+        <ul class="flex-grow flex justify-center gap-6 items-center text-sm font-medium" id="navLinks"></ul>
+        <div class="flex items-center" id="logoutDiv"></div>
+    </nav>
+    <!-- Espacio para compensar la barra de navegación fija -->
+    <div class="pt-20"></div> <!-- Ajusta el valor si es necesario -->
+    <!-- Enlaces centrados -->
+    <ul class="flex-grow flex justify-center gap-6 items-center text-sm font-medium" id="navLinks"></ul>
+    <!-- Botón cerrar sesión a la derecha -->
+    <div class="flex items-center" id="logoutDiv"></div>
+    <!-- Espacio para compensar la barra de navegación fija -->
+    <div class="pt-20"></div>
+    <!-- Contenido principal -->
+    <main class="pt-28 max-w-6xl mx-auto px-4">
+        <h1 class="text-3xl font-bold mb-6 text-center">Crear o Editar Producto</h1>
+        <!-- Formulario centrado -->
+        <form class="bg-gray-800 p-6 rounded shadow-md w-full max-w-md space-y-4 mx-auto" id="formCrearProducto">
+            <div>
+                <label class="block mb-1" for="nombre">Nombre:</label>
+                <input class="w-full px-3 py-2 rounded bg-gray-700 text-white" id="nombre" name="nombre" required=""
+                    type="text" />
+            </div>
+            <div>
+                <label class="block mb-1" for="descripcion">Descripción:</label>
+                <textarea class="w-full px-3 py-2 rounded bg-gray-700 text-white" id="descripcion" name="descripcion"
+                    required="" rows="3"></textarea>
+            </div>
+            <div>
+                <label class="block mb-1" for="precio_dia">Precio por día (€):</label>
+                <input class="w-full px-3 py-2 rounded bg-gray-700 text-white" id="precio_dia" min="0" name="precio_dia"
+                    required="" step="0.01" type="number" />
+            </div>
+            <div>
+                <label class="block mb-1" for="disponible">Cantidad disponible (stock):</label>
+                <input class="w-full px-3 py-2 rounded bg-gray-700 text-white" id="disponible" min="0" name="disponible"
+                    required="" step="1" type="number" />
+            </div>
+            <button class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded transition"
+                id="submitBtn" type="submit">Crear Producto</button>
+            <button class="hidden w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 rounded transition"
+                id="cancelEditBtn" type="button">Cancelar
+                Edición</button>
+        </form>
+        <section class="mt-10 w-full max-w-4xl">
+            <h2 class="text-2xl font-bold mb-4 text-yellow-400 text-center">Mis productos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="listaProductos"></div>
+        </section>
+        <p class="mt-4 text-center" id="mensaje"></p>
+    </main>
+    <script>
+        // Renderiza menú con enlaces y logout
+        function renderMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const logoutDiv = document.getElementById('logoutDiv');
+            if (!navLinks || !logoutDiv) return;
+            let user = null;
+            try {
+                user = JSON.parse(sessionStorage.getItem('user'));
+            } catch {
+                sessionStorage.removeItem('user');
+            }
+            const linkClass = "text-white hover:text-yellow-400";
+            const buttonClass = "hover:text-yellow-400 bg-red-600 px-3 py-1 rounded text-white font-semibold";
+
+            if (user && user.token) {
+                if (user.rol === 'cliente') {
+                    navLinks.innerHTML = `
+                        <li><a href="/PROYECTO/SOUNDFRONT/alquiler.html" class="${linkClass}">Alquilar productos</a></li>
+                    `;
+                    logoutDiv.innerHTML = `<button id="logoutBtn" class="${buttonClass}">Cerrar sesión</button>`;
+                } else if (user.rol === 'admin' || user.rol === 'dueño') {
+                    navLinks.innerHTML = `
+                        <li><a href="/PROYECTO/SOUNDFRONT/admin.html" class="${linkClass}">Admin</a></li>
+                    `;
+                    logoutDiv.innerHTML = `<button id="logoutBtn" class="${buttonClass}">Cerrar sesión</button>`;
+                }
+            } else {
+                navLinks.innerHTML = `
+                    <li><a href="/PROYECTO/SOUNDFRONT/index.html" class="${linkClass}">Inicio</a></li>
+                    <li><a href="/PROYECTO/SOUNDFRONT/servicios.html" class="${linkClass}">Servicios</a></li>
+                    <li><a href="/PROYECTO/SOUNDFRONT/admin.html" class="${linkClass}">Admin</a></li>
+                    <li><a href="/PROYECTO/SOUNDFRONT/productos.html" class="${linkClass}">Productos</a></li>
+                `;
+                logoutDiv.innerHTML = `<button id="logoutBtn" class="${buttonClass}">Cerrar sesión</button>`;
+            }
+
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    sessionStorage.clear();
+                    localStorage.clear();
+                    window.location.href = '/PROYECTO/SOUNDFRONT/login.html';
+                });
+            }
+        }
+
+        // Logout
+        function logout() {
+            sessionStorage.removeItem('user');
+            localStorage.clear();
+            window.location.href = '/PROYECTO/SOUNDFRONT/login.html';
+        }
+
+        // Extrae DNI del token JWT
+        function getDniFromToken() {
+            const token = localStorage.getItem('token');
+            if (!token) return null;
+            try {
+                const payloadBase64 = token.split('.')[1];
+                const decodedPayload = JSON.parse(atob(payloadBase64));
+                return decodedPayload.dni || null;
+            } catch (err) {
+                console.error("Error al decodificar el token:", err);
+                return null;
+            }
+        }
+
+        // Variables globales para edición
+        let editandoId = null;
+
+        // Carga productos del dueño
+        async function cargarMisProductos() {
+            const token = localStorage.getItem('token');
+            const dni = getDniFromToken();
+            if (!token || !dni) return;
+
+            const lista = document.getElementById('listaProductos');
+            lista.innerHTML = '';
+
+            try {
+                const res = await fetch('http://localhost:3000/api/productos/all', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (!res.ok) throw new Error('No autorizado');
+                const productos = await res.json();
+
+                if (!Array.isArray(productos)) {
+                    console.error("Productos no es un array", productos);
+                    return;
+                }
+
+                // Filtrar solo los productos del dueño
+                const productosFiltrados = productos.filter(p => String(p.id_dueño).trim() === String(dni).trim());
+
+                productosFiltrados.forEach(producto => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-gray-800 p-4 rounded shadow';
+
+                    card.innerHTML = `
+                        <h3 class="text-xl font-bold">${producto.nombre}</h3>
+                        <p>${producto.descripcion}</p>
+                        <p>Precio por día: ${producto.precio_dia}€</p>
+                        <p>Disponible: ${producto.disponible > 0 ? producto.disponible + " en stock" : "No disponible"}</p>
+                        <button onclick="editarProducto(${producto.id_producto})" class="mt-2 bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">Editar</button>
+                        <button onclick="borrarProducto(${producto.id_producto})" class="mt-2 bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Borrar</button>
+                    `;
+
+                    lista.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error("Error cargando productos del dueño:", error);
+            }
+        }
+
+        // Borrar producto
+        async function borrarProducto(id) {
+            const confirmar = confirm("¿Estás seguro de que quieres borrar este producto?");
+            if (!confirmar) return;
+
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch(`http://localhost:3000/api/productos/delete/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+
+                if (res.ok) {
+                    mostrarModal("Producto eliminado correctamente.", "success", "✅ Eliminado");
+                    cargarMisProductos();
+                } else {
+                    const error = await res.json();
+                    mostrarModal("Error al borrar: " + (error?.mensaje || "Desconocido"), "error", "❌ Error");
+                }
+            } catch (err) {
+                console.error("Error borrando producto:", err);
+            }
+        }
+
+        // Editar producto: carga datos en formulario
+        async function editarProducto(id) {
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch(`http://localhost:3000/api/productos/${id}`, {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (!res.ok) throw new Error('No autorizado o producto no encontrado');
+                const producto = await res.json();
+
+                // Rellenar formulario
+                const form = document.getElementById('formCrearProducto');
+                form.nombre.value = producto.nombre || '';
+                form.descripcion.value = producto.descripcion || '';
+                form.precio_dia.value = producto.precio_dia || '';
+                form.disponible.value = producto.disponible || 0;
+
+                editandoId = id;
+                document.getElementById('submitBtn').textContent = 'Actualizar Producto';
+                document.getElementById('cancelEditBtn').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch (err) {
+                mostrarModal("No se pudo cargar el producto.", "error", "❌ Error");
+                console.error(err);
+            }
+        }
+
+        // Cancelar edición
+        document.getElementById('cancelEditBtn').addEventListener('click', () => {
+            const form = document.getElementById('formCrearProducto');
+            form.reset();
+            editandoId = null;
+            document.getElementById('submitBtn').textContent = 'Crear Producto';
+            document.getElementById('cancelEditBtn').classList.add('hidden');
+        });
+
+        // Crear o actualizar producto
+        document.getElementById('formCrearProducto').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const form = e.target;
+            const mensaje = document.getElementById('mensaje');
+            mensaje.textContent = '';
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                mostrarModal("Debes iniciar sesión.", "error", "❌ Sesión requerida");
+                return;
+            }
+
+            const data = {
+                nombre: form.nombre.value.trim(),
+                descripcion: form.descripcion.value.trim(),
+                precio_dia: parseFloat(form.precio_dia.value),
+                disponible: parseInt(form.disponible.value, 10)
+            };
+
+            const url = editandoId
+                ? `http://localhost:3000/api/productos/modify/${editandoId}`
+                : `http://localhost:3000/api/productos/create`;
+
+            const method = editandoId ? 'PUT' : 'POST';
+
+            try {
+                const res = await fetch(url, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (res.ok) {
+                    mensaje.textContent = editandoId ? 'Producto actualizado.' : 'Producto creado con éxito.';
+                    form.reset();
+                    editandoId = null;
+                    document.getElementById('submitBtn').textContent = 'Crear Producto';
+                    document.getElementById('cancelEditBtn').classList.add('hidden');
+                    cargarMisProductos();
+                } else {
+                    const error = await res.json();
+                    mostrarModal("Error: " + (error?.mensaje || "Ocurrió un error"), "error", "❌ Error");
+                }
+            } catch (err) {
+                console.error('Error en el envío del formulario:', err);
+                mostrarModal("Error al conectar con el servidor", "error", "❌ Error de red");
+            }
+        });
+
+        // Inicialización
+        window.addEventListener('DOMContentLoaded', () => {
+            renderMenu();
+            cargarMisProductos();
+
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                logout();
+            });
+        });
+    </script>
+    <div class="modal-overlay hidden" id="notificationModal">
+        <div class="modal-box" id="notificationBox">
+            <h2 class="text-xl font-bold mb-2" id="notificationTitle">Título</h2>
+            <p class="text-sm mb-4" id="notificationMessage">Mensaje</p>
+            <button class="modal-button" id="notificationClose">Cerrar</button>
+        </div>
+    </div>
+    <script>function mostrarModal(mensaje, tipo = "info", titulo = "") {
+            const modal = document.getElementById("notificationModal");
+            const box = document.getElementById("notificationBox");
+            const title = document.getElementById("notificationTitle");
+            const message = document.getElementById("notificationMessage");
+
+            box.className = "modal-box text-center"; // reset
+            if (tipo === "success") box.classList.add("mod-success");
+            else if (tipo === "error") box.classList.add("mod-error");
+            else box.classList.add("mod-info");
+
+            title.textContent = titulo || (tipo === "success" ? "✅ Éxito" : tipo === "error" ? "❌ Error" : "ℹ️ Información");
+            message.textContent = mensaje;
+
+            modal.classList.remove("hidden");
+            setTimeout(() => modal.classList.add("hidden"), 3000);
+        }
+
+        document.getElementById("notificationClose").addEventListener("click", () => {
+            document.getElementById("notificationModal").classList.add("hidden");
+        });
+    </script>
+</body>
+
+</html>

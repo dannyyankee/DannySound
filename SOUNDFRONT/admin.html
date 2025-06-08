@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Panel de Administración</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./styles/modals.css" />
+
+</head>
+
+<body class="bg-black text-white">
+
+  <!-- Navbar -->
+  <nav class="bg-black bg-opacity-90 fixed w-full z-50 flex items-center px-6 py-4">
+    <!-- Logo a la izquierda -->
+    <div class="flex items-center gap-2">
+      <a href="/PROYECTO/SOUNDFRONT/index.html" class="flex items-center gap-2">
+        <div class="bg-yellow-400 text-black font-bold px-3 py-1 text-lg">DANNY</div>
+        <span class="text-yellow-400 font-semibold text-sm">YANKEE</span>
+      </a>
+    </div>
+
+    <!-- Enlaces centrados -->
+    <ul id="navLinks" class="flex-grow flex justify-center gap-6 items-center text-sm font-medium">
+      <!-- Enlaces generados dinámicamente aquí -->
+    </ul>
+
+    <!-- Botón cerrar sesión a la derecha -->
+    <div class="flex items-center">
+      <!-- Botón generado dinámicamente -->
+    </div>
+  </nav>
+
+  <!-- Contenido principal -->
+  <section class="pt-32 text-center">
+    <h1 class="text-4xl font-extrabold text-yellow-400 mb-6">Panel de Administración</h1>
+    <p class="text-white text-lg">Bienvenido al panel. Aquí puedes gestionar tus recursos.</p>
+  </section>
+
+  <script>
+    function renderMenu() {
+      const navLinks = document.getElementById('navLinks');
+      const rightDiv = navLinks.nextElementSibling; // div de la derecha para el botón cerrar sesión
+      if (!navLinks || !rightDiv) return;
+
+      let user = null;
+      try {
+        user = JSON.parse(sessionStorage.getItem('user'));
+      } catch (e) {
+        sessionStorage.removeItem('user');
+      }
+
+      const linkClass = "text-white hover:text-yellow-400";
+      const buttonClass = "hover:text-yellow-400 bg-red-600 px-3 py-1 rounded text-white font-semibold";
+
+      if (user && user.token) {
+        if (user.rol === 'cliente') {
+          navLinks.innerHTML = `
+            <li><a href="/PROYECTO/SOUNDFRONT/index.html" class="${linkClass}">Inicio</a></li>
+            <li><a href="/PROYECTO/SOUNDFRONT/servicios.html" class="${linkClass}">Servicios</a></li>
+            <li><a href="/PROYECTO/SOUNDFRONT/alquiler.html" class="${linkClass}">Alquilar productos</a></li>
+          `;
+          rightDiv.innerHTML = `<button id="logoutBtn" class="${buttonClass}">Cerrar sesión</button>`;
+        } else if (user.rol === 'admin' || user.rol === 'dueño') {
+          navLinks.innerHTML = `
+            <li><a href="/PROYECTO/SOUNDFRONT/index.html" class="${linkClass}">Inicio</a></li>
+            <li><a href="/PROYECTO/SOUNDFRONT/servicios.html" class="${linkClass}">Servicios</a></li>
+            <li><a href="/PROYECTO/SOUNDFRONT/adminCrearProducto.html" class="${linkClass}">Productos</a></li>
+          `;
+          rightDiv.innerHTML = `<button id="logoutBtn" class="${buttonClass}">Cerrar sesión</button>`;
+        }
+      } else {
+        navLinks.innerHTML = `
+        <li><a href="/PROYECTO/SOUNDFRONT/index.html" class="${linkClass}">Inicio</a></li>
+        <li><a href="/PROYECTO/SOUNDFRONT/admin.html" class="${linkClass}">Admin</a></li>
+            <li><a href="/PROYECTO/SOUNDFRONT/servicios.html" class="${linkClass}">Servicios</a></li>
+            <li><a href="/PROYECTO/SOUNDFRONT/adminCrearProducto.html" class="${linkClass}">Productos</a></li>
+          `;
+        rightDiv.innerHTML = `<button id="logoutBtn" class="${buttonClass}">Cerrar sesión</button>`;
+
+
+      }
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+          sessionStorage.clear();
+          localStorage.clear();
+          window.location.href = '/PROYECTO/SOUNDFRONT/login.html';
+        });
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', renderMenu);
+  </script>
+  <div id="notificationModal" class="modal-overlay hidden">
+    <div id="notificationBox" class="modal-box">
+      <h2 id="notificationTitle" class="text-xl font-bold mb-2">Título</h2>
+      <p id="notificationMessage" class="text-sm mb-4">Mensaje</p>
+      <button id="notificationClose" class="modal-button">Cerrar</button>
+    </div>
+  </div>
+  <script>
+    function mostrarModal(mensaje, tipo = "info", titulo = "") {
+      const modal = document.getElementById("notificationModal");
+      const box = document.getElementById("notificationBox");
+      const title = document.getElementById("notificationTitle");
+      const message = document.getElementById("notificationMessage");
+
+      box.className = "modal-box text-center";
+      if (tipo === "success") box.classList.add("modal-success");
+      else if (tipo === "error") box.classList.add("modal-error");
+      else box.classList.add("modal-info");
+
+      title.textContent = titulo || (tipo === "success" ? "✅ Éxito" : tipo === "error" ? "❌ Error" : "ℹ️ Información");
+      message.textContent = mensaje;
+
+      modal.classList.remove("hidden");
+    }
+
+    document.getElementById("notificationClose").addEventListener("click", () => {
+      document.getElementById("notificationModal").classList.add("hidden");
+    });
+  </script>
+
+</body>
+
+</html>

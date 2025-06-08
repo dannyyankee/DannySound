@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Eventos y Servicios</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./styles/modals.css" />
+
+</head>
+
+<body class="bg-gray-900 text-white">
+
+    <!-- Navbar -->
+    <nav class="bg-black bg-opacity-90 fixed w-full z-50 flex items-center justify-between px-6 py-4">
+        <a href="#" class="flex items-center gap-2">
+            <div class="bg-yellow-400 text-black font-bold px-3 py-1 text-lg">DANNY</div>
+            <span class="text-yellow-400 font-semibold text-sm">YANKEE</span>
+        </a>
+        <ul id="navLinks" class="hidden md:flex gap-6 items-center text-sm font-medium">
+            <li><a href="index.html" class="text-yellow-400 hover:text-yellow-300">Inicio</a></li>
+            <li id="clienteLink" class="hidden"><a href="cliente.html" class="hover:text-yellow-300">Alquilar
+                    productos</a></li>
+            <li id="adminLink" class="hidden"><a href="admin.html" class="hover:text-yellow-300">Admin</a></li>
+            <li><a href="eventos-info.html" class="hover:text-yellow-300">Servicios</a></li>
+            <li><a href="acercade.html" class="hover:text-yellow-300">Acerca de</a></li>
+            <li><a href="contacto.html" class="hover:text-yellow-300">Contacto</a></li>
+            <li id="loginLink"><a href="login.html" class="hover:text-yellow-300">Login</a></li>
+            <li id="logoutLink" class="hidden">
+                <button id="logoutBtn"
+                    class="hover:text-yellow-300 bg-red-600 px-3 py-1 rounded text-white font-semibold">Cerrar
+                    sesión</button>
+            </li>
+        </ul>
+
+        <div class="hidden md:flex gap-4 text-white">
+            <a href="#" aria-label="Facebook" class="hover:text-yellow-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24">
+                    <path
+                        d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 5 3.66 9.13 8.44 9.88v-6.99H7.9v-2.89h2.54v-2.2c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.25c-1.23 0-1.62.77-1.62 1.56v1.87h2.77l-.44 2.89h-2.33v6.99C18.34 21.13 22 17 22 12z" />
+                </svg>
+            </a>
+            <a href="#" aria-label="Instagram" class="hover:text-yellow-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24">
+                    <path
+                        d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 2A3.75 3.75 0 004 7.75v8.5A3.75 3.75 0 007.75 20h8.5a3.75 3.75 0 003.75-3.75v-8.5A3.75 3.75 0 0016.25 4h-8.5zm8.75 1.5a1 1 0 110 2 1 1 0 010-2zM12 7a5 5 0 110 10 5 5 0 010-10zm0 2a3 3 0 100 6 3 3 0 000-6z" />
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Servicios -->
+    <section class="bg-black bg-opacity-80 py-16 px-6 max-w-7xl mx-auto">
+        <h2 class="text-3xl font-extrabold text-center mb-12">SERVICIOS</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+            <div class="bg-black bg-opacity-70 rounded p-4 flex flex-col items-center text-center space-y-3">
+                <img src="./assects/eventos_en_vivo.jpeg" alt="Eventos en vivo"
+                    class="rounded-md w-full h-40 object-cover" />
+                <h3 class="text-yellow-400 font-semibold">Eventos en vivo</h3>
+                <p class="text-sm text-white">
+                    Párrafo. Haz clic aquí para añadir tu texto. Deja que los usuarios te
+                    conozcan.
+                </p>
+            </div>
+            <div class="bg-black bg-opacity-70 rounded p-4 flex flex-col items-center text-center space-y-3">
+                <img src="assects/ideas.jpeg" alt="Ideas y estrategias" class="rounded-md w-full h-40 object-cover" />
+                <h3 class="text-yellow-400 font-semibold">Ideas y estrategias</h3>
+                <p class="text-sm text-white">
+                    Párrafo. Haz clic aquí para añadir tu texto. Deja que los usuarios te
+                    conozcan.
+                </p>
+            </div>
+            <div class="bg-black bg-opacity-70 rounded p-4 flex flex-col items-center text-center space-y-3">
+                <img src="assects/diseño.jpeg" alt="Diseño de eventos" class="rounded-md w-full h-40 object-cover" />
+                <h3 class="text-yellow-400 font-semibold">Diseño de eventos</h3>
+                <p class="text-sm text-white">
+                    Párrafo. Haz clic aquí para añadir tu texto. Deja que los usuarios te
+                    conozcan.
+                </p>
+            </div>
+            <div class="bg-black bg-opacity-70 rounded p-4 flex flex-col items-center text-center space-y-3">
+                <img src="assects/catering.jpeg" alt="Servicio de catering"
+                    class="rounded-md w-full h-40 object-cover" />
+                <h3 class="text-yellow-400 font-semibold">Servicio de catering</h3>
+                <p class="text-sm text-white">
+                    Párrafo. Haz clic aquí para añadir tu texto. Deja que los usuarios te
+                    conozcan.
+                </p>
+            </div>
+            <div class="bg-black bg-opacity-70 rounded p-4 flex flex-col items-center text-center space-y-3">
+                <img src="assects/tardeo.jpg" alt="Servicio de música" class="rounded-md w-full h-40 object-cover" />
+                <h3 class="text-yellow-400 font-semibold">Servicio de música</h3>
+                <p class="text-sm text-white">
+                    Párrafo. Haz clic aquí para añadir tu texto. Deja que los usuarios te
+                    conozcan.
+                </p>
+            </div>
+            <div class="bg-black bg-opacity-70 rounded p-4 flex flex-col items-center text-center space-y-3">
+                <img src="assects/bar.jpeg" alt="Servicio de bar" class="rounded-md w-full h-40 object-cover" />
+                <h3 class="text-yellow-400 font-semibold">Servicio de bar</h3>
+                <p class="text-sm text-white">
+                    Párrafo. Haz clic aquí para añadir tu texto. Deja que los usuarios te
+                    conozcan.
+                </p>
+            </div>
+        </div>
+    </section>
+    <!-- Banner Planeando un Evento -->
+    <section class="bg-yellow-300 py-16 px-6 text-center text-black">
+        <h2 class="text-4xl font-extrabold mb-6">¿PLANEANDO UN EVENTO?</h2>
+        <div class="flex justify-center gap-4">
+            <button
+                class="bg-black text-yellow-300 px-6 py-2 font-semibold rounded hover:bg-yellow-400 hover:text-black transition">
+                Contáctanos
+            </button>
+            <button
+                class="bg-yellow-300 border border-black px-6 py-2 font-semibold rounded hover:bg-black hover:text-yellow-300 transition">
+                Nuestros eventos
+            </button>
+        </div>
+    </section>
+
+    <script>
+        // Mostrar enlaces y controlar sesión
+        async function setupNav() {
+            const token = localStorage.getItem('token');
+            const clienteLink = document.getElementById('clienteLink');
+            const adminLink = document.getElementById('adminLink');
+            const loginLink = document.getElementById('loginLink');
+            const logoutLink = document.getElementById('logoutLink');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            if (!token) {
+                clienteLink.classList.add('hidden');
+                adminLink.classList.add('hidden');
+                logoutLink.classList.add('hidden');
+                loginLink.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const res = await fetch('http://localhost:3000/api/usuarios/me', {
+                    headers: { 'user-token': token }
+                });
+                if (!res.ok) throw new Error('No autorizado');
+                const user = await res.json();
+                const rol = (user.rol || '').toLowerCase();
+
+                if (rol === 'cliente') {
+                    clienteLink.classList.remove('hidden');
+                    adminLink.classList.add('hidden');
+                } else if (rol === 'dueño' || rol === 'admin') {
+                    adminLink.classList.remove('hidden');
+                    clienteLink.classList.add('hidden');
+                } else {
+                    clienteLink.classList.add('hidden');
+                    adminLink.classList.add('hidden');
+                }
+
+                loginLink.classList.add('hidden');
+                logoutLink.classList.remove('hidden');
+
+                logoutBtn.addEventListener('click', () => {
+                    localStorage.clear();
+                    window.location.href = 'login.html';
+                });
+
+            } catch {
+                localStorage.clear();
+                clienteLink.classList.add('hidden');
+                adminLink.classList.add('hidden');
+                logoutLink.classList.add('hidden');
+                loginLink.classList.remove('hidden');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', setupNav);
+    </script>
+
+    <script>
+        async function renderMenu() {
+            const navbar = document.getElementById('navbar');
+            if (!navbar) return;
+            let user = null;
+            try {
+                user = JSON.parse(sessionStorage.getItem('user'));
+            } catch (e) {
+                sessionStorage.removeItem('user');
+            }
+            if (user && user.token) {
+                if (user.rol === 'cliente') {
+                    navbar.innerHTML = `
+        <a href="/alquiler.html" class="nav-link">Alquilar productos</a>
+        <a href="#" onclick="logout()" class="nav-link">Cerrar sesión</a>
+      `;
+                } else if (user.rol === 'admin') {
+                    navbar.innerHTML = `
+        <a href="/admin.html" class="nav-link">Admin</a>
+        <a href="#" onclick="logout()" class="nav-link">Cerrar sesión</a>
+      `;
+                }
+            } else {
+                navbar.innerHTML = `
+      <a href="/index.html" class="nav-link">Inicio</a>
+      <a href="/contacto.html" class="nav-link">Contacto</a>
+      <a href="/login.html" class="nav-link">Login</a>
+    `;
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('user');
+            window.location.href = '/login.html';
+        }
+
+        window.addEventListener('DOMContentLoaded', renderMenu);
+    </script>
+    <div id="notificationModal" class="modal-overlay hidden">
+        <div id="notificationBox" class="modal-box">
+            <h2 id="notificationTitle" class="text-xl font-bold mb-2">Título</h2>
+            <p id="notificationMessage" class="text-sm mb-4">Mensaje</p>
+            <button id="notificationClose" class="modal-button">Cerrar</button>
+        </div>
+    </div>
+    <script>function mostrarModal(mensaje, tipo = "info", titulo = "") {
+            const modal = document.getElementById("notificationModal");
+            const box = document.getElementById("notificationBox");
+            const title = document.getElementById("notificationTitle");
+            const message = document.getElementById("notificationMessage");
+
+            box.className = "modal-box text-center"; // reset
+            if (tipo === "success") box.classList.add("mod-success");
+            else if (tipo === "error") box.classList.add("mod-error");
+            else box.classList.add("mod-info");
+
+            title.textContent = titulo || (tipo === "success" ? "✅ Éxito" : tipo === "error" ? "❌ Error" : "ℹ️ Información");
+            message.textContent = mensaje;
+
+            modal.classList.remove("hidden");
+        }
+
+        document.getElementById("notificationClose").addEventListener("click", () => {
+            document.getElementById("notificationModal").classList.add("hidden");
+        });
+    </script>
+</body>
+
+</html>
