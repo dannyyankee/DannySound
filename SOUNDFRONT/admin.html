@@ -7,49 +7,68 @@
   <title>Panel de Administración</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="./styles/modals.css" />
-
 </head>
 
 <body class="bg-black text-white">
 
-  <!-- Navbar -->
+  <!-- Navbar actualizado -->
   <nav class="bg-black bg-opacity-90 fixed w-full z-50 flex items-center px-6 py-4">
-    <!-- Logo a la izquierda -->
     <div class="flex items-center gap-2">
       <a href="/PROYECTO/SOUNDFRONT/index.html" class="flex items-center gap-2">
         <div class="bg-yellow-400 text-black font-bold px-3 py-1 text-lg">DANNY</div>
-        <span class="text-yellow-400 font-semibold text-sm">YANKEE</span>
+        <span class="text-yellow-400 font-semibold text-sm">SOUND</span>
       </a>
     </div>
 
-    <!-- Enlaces centrados -->
     <ul id="navLinks" class="flex-grow flex justify-center gap-6 items-center text-sm font-medium">
-      <!-- Enlaces generados dinámicamente aquí -->
+      <!-- Links dinámicos -->
     </ul>
 
-    <!-- Botón cerrar sesión a la derecha -->
     <div class="flex items-center">
-      <!-- Botón generado dinámicamente -->
+      <!-- Cerrar sesión dinámico -->
     </div>
   </nav>
 
-  <!-- Contenido principal -->
-  <section class="pt-32 text-center">
-    <h1 class="text-4xl font-extrabold text-yellow-400 mb-6">Panel de Administración</h1>
-    <p class="text-white text-lg">Bienvenido al panel. Aquí puedes gestionar tus recursos.</p>
+  <!-- Gestión de usuarios -->
+  <section class="pt-32 px-4">
+    <h1 class="text-4xl font-extrabold text-yellow-400 text-center mb-6">Gestión de Usuarios</h1>
+    <div id="userTableContainer" class="max-w-4xl mx-auto bg-gray-900 p-4 rounded-lg shadow-md text-white">
+      <table class="w-full text-sm text-left">
+        <thead>
+          <tr class="border-b border-gray-700">
+            <th class="py-2">Nombre</th>
+            <th class="py-2">Email</th>
+            <th class="py-2">Rol</th>
+            <th class="py-2 text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody">
+          <!-- Carga dinámica -->
+        </tbody>
+      </table>
+    </div>
   </section>
+
+  <!-- Modal -->
+  <div id="notificationModal" class="modal-overlay hidden">
+    <div id="notificationBox" class="modal-box">
+      <h2 id="notificationTitle" class="text-xl font-bold mb-2">Título</h2>
+      <p id="notificationMessage" class="text-sm mb-4">Mensaje</p>
+      <button id="notificationClose" class="modal-button">Cerrar</button>
+    </div>
+  </div>
 
   <script>
     function renderMenu() {
       const navLinks = document.getElementById('navLinks');
-      const rightDiv = navLinks.nextElementSibling; // div de la derecha para el botón cerrar sesión
+      const rightDiv = navLinks.nextElementSibling;
       if (!navLinks || !rightDiv) return;
 
       let user = null;
       try {
-        user = JSON.parse(sessionStorage.getItem('user'));
+        user = JSON.parse(localStorage.getItem('user'));
       } catch (e) {
-        sessionStorage.removeItem('user');
+        localStorage.removeItem('user');
       }
 
       const linkClass = "text-white hover:text-yellow-400";
@@ -62,26 +81,25 @@
             <li><a href="/PROYECTO/SOUNDFRONT/servicios.html" class="${linkClass}">Servicios</a></li>
             <li><a href="/PROYECTO/SOUNDFRONT/alquiler.html" class="${linkClass}">Alquilar productos</a></li>
           `;
-          rightDiv.innerHTML = `<button id="logoutBtn" class="${buttonClass}">Cerrar sesión</button>`;
         } else if (user.rol === 'admin' || user.rol === 'dueño') {
           navLinks.innerHTML = `
             <li><a href="/PROYECTO/SOUNDFRONT/index.html" class="${linkClass}">Inicio</a></li>
             <li><a href="/PROYECTO/SOUNDFRONT/servicios.html" class="${linkClass}">Servicios</a></li>
             <li><a href="/PROYECTO/SOUNDFRONT/adminCrearProducto.html" class="${linkClass}">Productos</a></li>
+            <li><a href="/PROYECTO/SOUNDFRONT/admin.html" class="${linkClass}">Usuarios</a></li>
           `;
-          rightDiv.innerHTML = `<button id="logoutBtn" class="${buttonClass}">Cerrar sesión</button>`;
         }
+        rightDiv.innerHTML = `<button id="logoutBtn" class="${buttonClass}">Cerrar sesión</button>`;
       } else {
         navLinks.innerHTML = `
-        <li><a href="/PROYECTO/SOUNDFRONT/index.html" class="${linkClass}">Inicio</a></li>
-        <li><a href="/PROYECTO/SOUNDFRONT/admin.html" class="${linkClass}">Admin</a></li>
-            <li><a href="/PROYECTO/SOUNDFRONT/servicios.html" class="${linkClass}">Servicios</a></li>
-            <li><a href="/PROYECTO/SOUNDFRONT/adminCrearProducto.html" class="${linkClass}">Productos</a></li>
-          `;
+           <li><a href="/PROYECTO/SOUNDFRONT/index.html" class="${linkClass}">Inicio</a></li>
+                    <li><a href="/PROYECTO/SOUNDFRONT/servicios.html" class="${linkClass}">Servicios</a></li>
+                    <li><a href="/PROYECTO/SOUNDFRONT/admin.html" class="${linkClass}">Admin</a></li>
+                    <li><a href="/PROYECTO/SOUNDFRONT/productos.html" class="${linkClass}">Productos</a></li>
+             `;
         rightDiv.innerHTML = `<button id="logoutBtn" class="${buttonClass}">Cerrar sesión</button>`;
-
-
       }
+
       const logoutBtn = document.getElementById('logoutBtn');
       if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
@@ -92,16 +110,6 @@
       }
     }
 
-    window.addEventListener('DOMContentLoaded', renderMenu);
-  </script>
-  <div id="notificationModal" class="modal-overlay hidden">
-    <div id="notificationBox" class="modal-box">
-      <h2 id="notificationTitle" class="text-xl font-bold mb-2">Título</h2>
-      <p id="notificationMessage" class="text-sm mb-4">Mensaje</p>
-      <button id="notificationClose" class="modal-button">Cerrar</button>
-    </div>
-  </div>
-  <script>
     function mostrarModal(mensaje, tipo = "info", titulo = "") {
       const modal = document.getElementById("notificationModal");
       const box = document.getElementById("notificationBox");
@@ -122,8 +130,86 @@
     document.getElementById("notificationClose").addEventListener("click", () => {
       document.getElementById("notificationModal").classList.add("hidden");
     });
-  </script>
 
+    async function cargarUsuarios() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      const tbody = document.getElementById('userTableBody');
+
+      if (!user || (user.rol !== 'admin' && user.rol !== 'dueño')) return;
+
+      try {
+        const res = await fetch('http://localhost:3000/api/usuarios', {
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
+        });
+
+        const usuarios = await res.json();
+        tbody.innerHTML = '';
+
+        usuarios.forEach(u => {
+          tbody.innerHTML += `
+            <tr class="border-b border-gray-700">
+              <td class="py-2">${u.nombre}</td>
+              <td class="py-2">${u.email}</td>
+              <td class="py-2">
+                <select data-id="${u.dni}" class="cambioRol bg-gray-800 text-white rounded px-2 py-1">
+                  <option value="cliente" ${u.rol === 'cliente' ? 'selected' : ''}>Cliente</option>
+                  <option value="dueño" ${u.rol === 'dueño' ? 'selected' : ''}>Dueño</option>
+                  <option value="admin" ${u.rol === 'admin' ? 'selected' : ''}>Admin</option>
+                </select>
+              </td>
+              <td class="py-2 text-center">
+                <button data-id="${u.dni}" class="eliminarUsuario bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">Eliminar</button>
+              </td>
+            </tr>
+          `;
+        });
+
+        document.querySelectorAll('.cambioRol').forEach(select => {
+          select.addEventListener('change', async (e) => {
+            const dni = e.target.getAttribute('data-id');
+            const nuevoRol = e.target.value;
+
+            await fetch(`http://localhost:3000/api/usuarios/${dni}/rol`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+              },
+              body: JSON.stringify({ rol: nuevoRol })
+            });
+
+            mostrarModal(`Rol actualizado a ${nuevoRol}`, 'success');
+          });
+        });
+
+        document.querySelectorAll('.eliminarUsuario').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const dni = btn.getAttribute('data-id');
+            if (!confirm('¿Estás seguro de eliminar este usuario?')) return;
+
+            await fetch(`http://localhost:3000/api/usuarios/${dni}`, {
+              method: 'DELETE',
+              headers: { 'Authorization': `Bearer ${user.token}` }
+            });
+
+            mostrarModal('Usuario eliminado correctamente', 'success');
+            cargarUsuarios();
+          });
+        });
+
+      } catch (err) {
+        console.error(err);
+        mostrarModal('Error al cargar usuarios', 'error');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderMenu();
+      cargarUsuarios();
+    });
+  </script>
 </body>
 
 </html>

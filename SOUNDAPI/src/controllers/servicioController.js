@@ -2,6 +2,7 @@ const { Servicio, Producto, DetalleServicio, Usuario } = require("../database/as
 const path = require("path");
 const { generarFacturaServicio } = require("../services/pdfService");
 const { enviarFacturaPorCorreo } = require("../services/emailService");
+const { actualizarEstadosServicios } = require('../services/servicioService');
 
 
 const generarFactura = async (req, res) => {
@@ -52,6 +53,8 @@ const generarFactura = async (req, res) => {
 
 // Obtener todos los servicios (sin filtro)
 const getAllServicios = async (req, res) => {
+  await actualizarEstadosServicios();
+
   try {
     const servicios = await Servicio.findAll({
       include: [

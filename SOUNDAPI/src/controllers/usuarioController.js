@@ -126,6 +126,57 @@ class UsuarioController {
       res.status(500).json({ mensaje: "Error enviando el correo" });
     }
   }
+  // Método para cambiar la contraseña del usuario autenticado
+  static async cambiarContrasenaSinToken(req, res) {
+    try {
+      const { correo, currentPassword, newPassword, repeatNewPassword } = req.body;
+
+      if (!correo || !currentPassword || !newPassword || !repeatNewPassword) {
+        return res.status(400).json({ mensaje: "Todos los campos son obligatorios" });
+      }
+      if (newPassword !== repeatNewPassword) {
+        return res.status(400).json({ mensaje: "Las nuevas contraseñas no coinciden" });
+      }
+
+      await usuarioService.cambiarContrasenaSinToken(correo, currentPassword, newPassword);
+      res.json({ mensaje: "Contraseña cambiada correctamente" });
+    } catch (error) {
+      if (error.message === "Contraseña actual incorrecta") {
+        return res.status(401).json({ mensaje: error.message });
+      }
+      if (error.message.includes("longitud")) {
+        return res.status(400).json({ mensaje: error.message });
+      }
+      if (error.message === "Usuario no encontrado") {
+        return res.status(404).json({ mensaje: error.message });
+      }
+      console.error("Error cambiarContrasenaSinToken:", error);
+      res.status(500).json({ mensaje: "Error interno del servidor" });
+    }
+  }
+  // Método para cambiar el rol de un usuario
+  static async cambiarRolUsuario(req, res) {
+    const { dni } = req.params;
+    const { rol } = req.body;
+
+    if (!["cliente", "dueño", "admin"].includes(rol)) {
+      return res.status(400).json({ mensaje: "Rol no válido" });
+    }
+
+    try {
+      const actualizado = await usuarioService.actualizarRol(dni, rol);
+      if (actualizado) {
+        res.json({ mensaje: `Rol actualizado a ${rol}` });
+      } else {
+        res.status(404).json({ mensaje: "Usuario no encontrado" });
+      }
+    } catch (error) {
+      console.error("Error cambiarRolUsuario:", error);
+      res.status(500).json({ mensaje: "Error al cambiar el rol del usuario" });
+    }
+  }
+
+
 }
 
 module.exports = UsuarioController;

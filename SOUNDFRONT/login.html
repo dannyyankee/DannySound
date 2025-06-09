@@ -9,28 +9,24 @@
     <script src="validateForm.js" defer></script>
     <script src="login.js" defer></script>
     <link rel="stylesheet" href="./styles/modals.css" />
-
 </head>
 
 <body class="bg-gray-900 text-white min-h-screen">
 
     <!-- Navbar -->
     <nav class="bg-black bg-opacity-90 fixed w-full z-50 flex items-center px-6 py-4">
-        <!-- Logo a la izquierda -->
         <div class="flex items-center gap-2">
             <a href="#" class="flex items-center gap-2">
                 <div class="bg-yellow-400 text-black font-bold px-3 py-1 text-lg">DANNY</div>
-                <span class="text-yellow-400 font-semibold text-sm">YANKEE</span>
+                <span class="text-yellow-400 font-semibold text-sm">SOUND</span>
             </a>
         </div>
 
-        <!-- Menú centrado -->
         <ul class="absolute left-1/2 transform -translate-x-1/2 flex gap-6 items-center text-sm font-medium"
             id="navLinks">
             <li><a href="index.html" class="text-yellow-400 hover:text-yellow-300">Inicio</a></li>
             <li id="clienteLink" class="hidden"><a href="alquiler.html" class="hover:text-yellow-300">Alquilar
-                    productos</a>
-            </li>
+                    productos</a></li>
             <li id="adminLink" class="hidden"><a href="admin.html" class="hover:text-yellow-300">Admin</a></li>
             <li><a href="eventos-info.html" class="hover:text-yellow-300">Servicios</a></li>
             <li><a href="acercade.html" class="hover:text-yellow-300">Acerca de</a></li>
@@ -72,11 +68,48 @@
 
                 <p class="text-sm text-center mt-4">
                     ¿No tienes cuenta?
-                    <a href="#" class="text-blue-400 underline" onclick="toggleForms('register')">Regístrate</a>
+                    <a href="#" class="text-blue-400 underline" onclick="toggleForms('registerForm')">Regístrate</a>
                 </p>
                 <p class="text-sm text-center">
                     ¿Olvidaste tu contraseña?
-                    <a href="#" class="text-blue-400 underline" onclick="toggleForms('reset')">Recupérala aquí</a>
+                    <a href="#" class="text-blue-400 underline" onclick="toggleForms('resetForm')">Recupérala aquí</a>
+                </p>
+
+                <p class="text-sm text-center mt-4">
+                    ¿Quieres cambiar tu contraseña?
+                    <a href="#" id="showChangePasswordEmail" class="text-blue-400 underline"
+                        onclick="toggleForms('changePasswordEmailForm')">Cambiar contraseña</a>
+                </p>
+            </form>
+
+            <!-- CAMBIAR CONTRASEÑA CON EMAIL -->
+            <form id="changePasswordEmailForm" class="hidden max-w-md mx-auto p-4 bg-gray-900 rounded text-white mt-6">
+                <h3 class="text-lg font-bold mb-4">Cambiar contraseña</h3>
+
+                <label for="email" class="block mb-1">Correo electrónico</label>
+                <input type="email" id="email" name="email" class="w-full p-2 mb-2 rounded text-black" required />
+
+                <label for="currentPassword" class="block mb-1">Contraseña actual</label>
+                <input type="password" id="currentPassword" name="currentPassword"
+                    class="w-full p-2 mb-2 rounded text-black" required />
+
+                <label for="newPassword" class="block mb-1">Nueva contraseña</label>
+                <input type="password" id="newPassword" name="newPassword" class="w-full p-2 mb-2 rounded text-black"
+                    required minlength="8" maxlength="16" />
+
+                <label for="repeatNewPassword" class="block mb-1">Repetir nueva contraseña</label>
+                <input type="password" id="repeatNewPassword" name="repeatNewPassword"
+                    class="w-full p-2 mb-4 rounded text-black" required />
+
+                <p id="errorChangePassword" class="text-red-500 mb-4"></p>
+
+                <button type="submit"
+                    class="bg-yellow-400 text-black px-4 py-2 rounded font-bold hover:bg-yellow-300 w-full">Cambiar
+                    contraseña</button>
+
+                <p class="mt-4 text-center">
+                    <a href="#" id="backToLoginFromChange" class="text-blue-400 underline"
+                        onclick="toggleForms('loginForm')">Volver al login</a>
                 </p>
             </form>
 
@@ -139,7 +172,7 @@
 
                 <p class="text-sm text-center mt-4">
                     ¿Ya tienes cuenta?
-                    <a href="#" class="text-blue-400 underline" onclick="toggleForms('login')">Inicia sesión</a>
+                    <a href="#" class="text-blue-400 underline" onclick="toggleForms('loginForm')">Inicia sesión</a>
                 </p>
             </form>
 
@@ -160,7 +193,7 @@
 
                 <p class="text-sm text-center mt-4">
                     ¿Recuerdas tu contraseña?
-                    <a href="#" class="text-blue-400 underline" onclick="toggleForms('login')">Inicia sesión</a>
+                    <a href="#" class="text-blue-400 underline" onclick="toggleForms('loginForm')">Inicia sesión</a>
                 </p>
             </form>
 
@@ -180,18 +213,23 @@
 
     <script>
         // Muestra solo el formulario indicado y oculta los demás
-        function toggleForms(form) {
-            ['loginForm', 'registerForm', 'resetForm'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
+        function toggleForms(formId) {
+            const forms = ['loginForm', 'registerForm', 'changePasswordEmailForm', 'resetForm', 'changePasswordForm'];
+            forms.forEach(f => {
+                const el = document.getElementById(f);
+                if (el) el.classList.add('hidden');
             });
-            if (form) document.getElementById(form + 'Form').classList.remove('hidden');
+            if (formId) {
+                const showForm = document.getElementById(formId);
+                if (showForm) showForm.classList.remove('hidden');
+            }
         }
         window.toggleForms = toggleForms;
 
         // Cerrar modal de éxito
         document.getElementById('modalCloseBtn').addEventListener('click', () => {
             document.getElementById('modalSuccess').classList.add('hidden');
-            toggleForms('login');
+            toggleForms('loginForm');
         });
 
         // Manejo de menú según sesión y rol
@@ -243,6 +281,61 @@
                 window.location.href = 'login.html';
             });
         });
+
+        // Formulario cambiar contraseña con email
+        document.getElementById('changePasswordEmailForm')?.addEventListener('submit', async e => {
+            e.preventDefault();
+
+            const errorChangePassword = document.getElementById('errorChangePassword');
+            errorChangePassword.textContent = '';
+
+            const email = e.target.email.value.trim();
+            const currentPassword = e.target.currentPassword.value.trim();
+            const newPassword = e.target.newPassword.value.trim();
+            const repeatNewPassword = e.target.repeatNewPassword.value.trim();
+
+            if (!email || !currentPassword || !newPassword || !repeatNewPassword) {
+                errorChangePassword.textContent = 'Por favor, rellena todos los campos.';
+                return;
+            }
+
+            if (newPassword.length < 8 || newPassword.length > 16) {
+                errorChangePassword.textContent = 'La nueva contraseña debe tener entre 8 y 16 caracteres.';
+                return;
+            }
+
+            if (newPassword !== repeatNewPassword) {
+                errorChangePassword.textContent = 'Las nuevas contraseñas no coinciden.';
+                return;
+            }
+
+            try {
+                const res = await fetch('http://localhost:3000/api/usuarios/change-password-no-token', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        correo: email,
+                        currentPassword: currentPassword,
+                        newPassword: newPassword,
+                        repeatNewPassword: repeatNewPassword
+                    })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    errorChangePassword.textContent = data.error || data.mensaje || 'Error al cambiar la contraseña.';
+                    return;
+                }
+
+                alert('Contraseña cambiada correctamente. Por favor, inicia sesión con la nueva contraseña.');
+                e.target.reset();
+                toggleForms('loginForm');
+            } catch (error) {
+                console.error('Error al cambiar contraseña:', error);
+                errorChangePassword.textContent = 'Error de conexión con el servidor.';
+            }
+        });
     </script>
     <div id="notificationModal" class="modal-overlay hidden">
         <div id="notificationBox" class="modal-box">
@@ -251,27 +344,28 @@
             <button id="notificationClose" class="modal-button">Cerrar</button>
         </div>
     </div>
-<script>function mostrarModal(mensaje, tipo = "info", titulo = "") {
-        const modal = document.getElementById("notificationModal");
-        const box = document.getElementById("notificationBox");
-        const title = document.getElementById("notificationTitle");
-        const message = document.getElementById("notificationMessage");
+    <script>
+        function mostrarModal(mensaje, tipo = "info", titulo = "") {
+            const modal = document.getElementById("notificationModal");
+            const box = document.getElementById("notificationBox");
+            const title = document.getElementById("notificationTitle");
+            const message = document.getElementById("notificationMessage");
 
-        box.className = "modal-box text-center"; // reset
-        if (tipo === "success") box.classList.add("mod-success");
-        else if (tipo === "error") box.classList.add("mod-error");
-        else box.classList.add("mod-info");
+            box.className = "modal-box text-center"; // reset
+            if (tipo === "success") box.classList.add("mod-success");
+            else if (tipo === "error") box.classList.add("mod-error");
+            else box.classList.add("mod-info");
 
-        title.textContent = titulo || (tipo === "success" ? "✅ Éxito" : tipo === "error" ? "❌ Error" : "ℹ️ Información");
-        message.textContent = mensaje;
+            title.textContent = titulo || (tipo === "success" ? "✅ Éxito" : tipo === "error" ? "❌ Error" : "ℹ️ Información");
+            message.textContent = mensaje;
 
-        modal.classList.remove("hidden");
-    }
+            modal.classList.remove("hidden");
+        }
 
-    document.getElementById("notificationClose").addEventListener("click", () => {
-        document.getElementById("notificationModal").classList.add("hidden");
-    });
-  </script>
+        document.getElementById("notificationClose").addEventListener("click", () => {
+            document.getElementById("notificationModal").classList.add("hidden");
+        });
+    </script>
 </body>
 
 </html>

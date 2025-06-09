@@ -16,7 +16,7 @@
     <nav class="bg-black bg-opacity-90 fixed w-full z-50 flex items-center justify-between px-6 py-4">
         <a href="#" class="flex items-center gap-2">
             <div class="bg-yellow-400 text-black font-bold px-3 py-1 text-lg">DANNY</div>
-            <span class="text-yellow-400 font-semibold text-sm">YANKEE</span>
+            <span class="text-yellow-400 font-semibold text-sm">SOUND</span>
         </a>
         <ul id="navLinks" class="hidden md:flex gap-6 items-center text-sm font-medium">
             <li><a href="index.html" class="text-yellow-400 hover:text-yellow-300">Inicio</a></li>
@@ -54,7 +54,7 @@
                 INOLVIDABLES
             </h1>
             <button class="bg-yellow-400 text-black font-semibold px-6 py-3 rounded hover:bg-yellow-300 transition">
-                Qué hacemos
+                <a href="eventos-info.html" class="hover:text-yellow-300">QUE HACEMOS</a>
             </button>
         </div>
     </header>
@@ -161,27 +161,27 @@
             <button id="notificationClose" class="modal-button">Cerrar</button>
         </div>
     </div>
-<script>function mostrarModal(mensaje, tipo = "info", titulo = "") {
-        const modal = document.getElementById("notificationModal");
-        const box = document.getElementById("notificationBox");
-        const title = document.getElementById("notificationTitle");
-        const message = document.getElementById("notificationMessage");
+    <script>function mostrarModal(mensaje, tipo = "info", titulo = "") {
+            const modal = document.getElementById("notificationModal");
+            const box = document.getElementById("notificationBox");
+            const title = document.getElementById("notificationTitle");
+            const message = document.getElementById("notificationMessage");
 
-        box.className = "modal-box text-center"; // reset
-        if (tipo === "success") box.classList.add("mod-success");
-        else if (tipo === "error") box.classList.add("mod-error");
-        else box.classList.add("mod-info");
+            box.className = "modal-box text-center"; // reset
+            if (tipo === "success") box.classList.add("mod-success");
+            else if (tipo === "error") box.classList.add("mod-error");
+            else box.classList.add("mod-info");
 
-        title.textContent = titulo || (tipo === "success" ? "✅ Éxito" : tipo === "error" ? "❌ Error" : "ℹ️ Información");
-        message.textContent = mensaje;
+            title.textContent = titulo || (tipo === "success" ? "✅ Éxito" : tipo === "error" ? "❌ Error" : "ℹ️ Información");
+            message.textContent = mensaje;
 
-        modal.classList.remove("hidden");
-    }
+            modal.classList.remove("hidden");
+        }
 
-    document.getElementById("notificationClose").addEventListener("click", () => {
-        document.getElementById("notificationModal").classList.add("hidden");
-    });
-  </script>
+        document.getElementById("notificationClose").addEventListener("click", () => {
+            document.getElementById("notificationModal").classList.add("hidden");
+        });
+    </script>
 </body>
 
 </html>

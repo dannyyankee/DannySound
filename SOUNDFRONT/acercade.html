@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
+    <link rel="icon" href="./assects/icons/favicon.png" type="image/png">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Acerca de - DannySound</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,10 +12,10 @@
 
 <body class="bg-black text-white">
     <!-- Navbar -->
-    <nav class="bg-black bg-opacity-90 fixed w-full z-50 flex items-center justify-between px-6 py-4">
+    <nav class="bg-black bg-opacity-90 fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4">
         <a class="flex items-center gap-2" href="#">
             <div class="bg-yellow-400 text-black font-bold px-3 py-1 text-lg">DANNY</div>
-            <span class="text-yellow-400 font-semibold text-sm">YANKEE</span>
+            <span class="text-yellow-400 font-semibold text-sm">SOUND</span>
         </a>
         <ul class="hidden md:flex gap-6 items-center text-sm font-medium" id="navLinks">
             <li><a class="text-yellow-400 hover:text-yellow-300" href="./index.html">Inicio</a></li>
@@ -47,9 +48,65 @@
             </a>
         </div>
     </nav>
+    <!-- Galería de eventos -->
+    <section class="bg-black py-20 text-center px-4 text-white mt-[80px] max-w-6xl mx-auto">
+        <h2 class="text-4xl font-bold mb-10 text-yellow-400">Galería de eventos</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+
+            <!-- Evento 1 -->
+            <div>
+                <img src="./assects/acerca-de/1.jpeg" alt="Evento 1"
+                    class="w-full h-64 object-cover rounded shadow-lg transform transition duration-300 hover:scale-110 hover:shadow-2xl">
+                <p class="mt-2 text-sm text-gray-300 italic">Montaje exterior para boda privada</p>
+                <p class="text-yellow-400 text-sm flex justify-center items-center gap-1">🏙️ El Palmeral (Alberche)</p>
+            </div>
+
+            <!-- Evento 2 -->
+            <div>
+                <img src="./assects/acerca-de/2 (1).jpeg" alt="Evento 2"
+                    class="w-full h-64 object-cover rounded shadow-lg transform transition duration-300 hover:scale-110 hover:shadow-2xl">
+                <p class="mt-2 text-sm text-gray-300 italic">Fiesta de verano con DJ en directo</p>
+                <p class="text-yellow-400 text-sm flex justify-center items-center gap-1">🏙️ Calera y Chozas</p>
+            </div>
+
+            <!-- Evento 3 -->
+            <div>
+                <img src="./assects/acerca-de/3.jpeg" alt="Evento 3"
+                    class="w-full h-64 object-cover rounded shadow-lg transform transition duration-300 hover:scale-110 hover:shadow-2xl">
+                <p class="mt-2 text-sm text-gray-300 italic">Sonorizacion con discomovil</p>
+                <p class="text-yellow-400 text-sm flex justify-center items-center gap-1">🏙️ Valdeverdeja</p>
+            </div>
+
+            <!-- Evento 4 -->
+            <div>
+                <img src="./assects/acerca-de/4.jpeg" alt="Evento 4"
+                    class="w-full h-64 object-cover rounded shadow-lg transform transition duration-300 hover:scale-110 hover:shadow-2xl">
+                <p class="mt-2 text-sm text-gray-300 italic">Macrodiscoteca con pantalla LED</p>
+                <p class="text-yellow-400 text-sm flex justify-center items-center gap-1">🏙️ Cazalegas</p>
+            </div>
+
+            <!-- Evento 5 -->
+            <div>
+                <img src="./assects/acerca-de/5.jpeg" alt="Evento 5"
+                    class="w-full h-64 object-cover rounded shadow-lg transform transition duration-300 hover:scale-110 hover:shadow-2xl">
+                <p class="mt-2 text-sm text-gray-300 italic">Montaje elegante para pub con musica 80,90,00's</p>
+                <p class="text-yellow-400 text-sm flex justify-center items-center gap-1">🏙️ Navalmoral de la Mata</p>
+            </div>
+
+            <!-- Evento 6 -->
+            <div>
+                <img src="./assects/acerca-de/6 (1).jpeg" alt="Evento 6"
+                    class="w-full h-64 object-cover rounded shadow-lg transform transition duration-300 hover:scale-110 hover:shadow-2xl">
+                <p class="mt-2 text-sm text-gray-300 italic">Dj para discoteca</p>
+                <p class="text-yellow-400 text-sm flex justify-center items-center gap-1">🏙️ Wonderland Talavera</p>
+            </div>
+
+        </div>
+    </section>
+
 
     <!-- Clientes satisfechos -->
-    <section class="bg-yellow-300 py-20 text-center px-4 text-black mt-16 max-w-4xl mx-auto rounded-lg shadow-lg">
+    <section class="bg-yellow-300 py-20 text-center px-4 text-black mt-[80px] max-w-4xl mx-auto rounded-lg shadow-lg">
         <h2 class="text-4xl font-bold mb-4">Clientes satisfechos</h2>
         <p class="text-lg mb-6">Superaron, por mucho, mis expectativas</p>
 

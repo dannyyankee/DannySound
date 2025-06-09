@@ -1,4 +1,5 @@
 const { Servicio, Producto, DetalleServicio, Usuario } = require("../database/associations");
+const { Op } = require("sequelize");
 const { generarFacturaPDF } = require("../services/pdfService");
 const { enviarFacturaPorCorreo } = require("../services/emailService");
 // Obtener todos los servicios con cliente y detalles (sin calcular nada extra)
@@ -174,12 +175,35 @@ const getServiciosDeCliente = async (dni_cliente) => {
         throw error;
     }
 };
+async function actualizarEstadosServicios() {
+    const hoy = new Date();
 
+    await Servicio.update(
+        { estado: 'pendiente' },
+        { where: { fecha_inicio: { [Op.gt]: hoy } } }
+    );
+
+    await Servicio.update(
+        { estado: 'aceptado' },
+        {
+            where: {
+                fecha_inicio: { [Op.lte]: hoy },
+                fecha_fin: { [Op.gte]: hoy }
+            }
+        }
+    );
+
+    await Servicio.update(
+        { estado: 'finalizado' },
+        { where: { fecha_fin: { [Op.lt]: hoy } } }
+    );
+}
 module.exports = {
     getAllServicios,
     getServicioById,
     crearServicioConProductos,
     actualizarServicio,
     getServiciosDeCliente,
+    actualizarEstadosServicios,
     eliminarServicio,
 };

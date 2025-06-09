@@ -105,6 +105,30 @@ const remove = async (correo) => {
   const deleted = await Usuario.destroy({ where: { correo } });
   return deleted;
 };
+
+const cambiarContrasenaSinToken = async (correo, currentPassword, newPassword) => {
+  const usuario = await Usuario.findOne({ where: { correo } });
+  if (!usuario) throw new Error("Usuario no encontrado");
+
+  const coincide = await bcrypt.compare(currentPassword, usuario.clave);
+  if (!coincide) throw new Error("Contraseña actual incorrecta");
+
+  if (newPassword.length < 8 || newPassword.length > 16) {
+    throw new Error("La nueva contraseña debe tener entre 8 y 16 caracteres");
+  }
+
+  const hashNueva = await bcrypt.hash(newPassword, 10);
+  usuario.clave = hashNueva;
+  await usuario.save();
+
+  return true;
+};
+
+const actualizarRol = async (dni, nuevoRol) => {
+  const [actualizado] = await Usuario.update({ rol: nuevoRol }, { where: { dni } });
+  return actualizado;
+};
+
 module.exports = {
   login,
   register,
@@ -114,5 +138,7 @@ module.exports = {
   getUnUsuarioPorDni,
   updateUsuario,
   remove,
+  actualizarRol,
+  cambiarContrasenaSinToken,
   recuperarPassword,
 };
